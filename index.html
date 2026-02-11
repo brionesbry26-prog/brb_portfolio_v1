@@ -1,0 +1,1522 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Bryan Ronnie Briones — Portfolio</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Mono:wght@300;400;500&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #F5F3EE;
+      --bg2: #EDEAE3;
+      --fg: #1A1A18;
+      --fg-muted: #6B6860;
+      --accent: #2D5A3D;
+      --accent-light: #5C8C6A;
+      --accent-glow: rgba(45,90,61,0.12);
+      --border: rgba(26,26,24,0.1);
+      --card: #FAFAF7;
+      --serif: 'DM Serif Display', Georgia, serif;
+      --mono: 'DM Mono', monospace;
+      --sans: 'DM Sans', sans-serif;
+      --radius: 2px;
+      --transition: 0.35s cubic-bezier(0.4,0,0.2,1);
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--bg);
+      color: var(--fg);
+      font-family: var(--sans);
+      font-size: 16px;
+      line-height: 1.6;
+      overflow-x: hidden;
+      cursor: none;
+    }
+
+    /* ---- CURSOR ---- */
+    #cursor {
+      position: fixed; top:0; left:0; z-index: 9999;
+      width: 10px; height: 10px;
+      background: var(--accent);
+      border-radius: 50%;
+      pointer-events: none;
+      transform: translate(-50%,-50%);
+      transition: transform 0.1s, width 0.3s, height 0.3s, background 0.3s;
+    }
+    #cursor-ring {
+      position: fixed; top:0; left:0; z-index: 9998;
+      width: 32px; height: 32px;
+      border: 1.5px solid var(--accent);
+      border-radius: 50%;
+      pointer-events: none;
+      transform: translate(-50%,-50%);
+      transition: transform 0.15s, width 0.3s, height 0.3s, opacity 0.3s;
+      opacity: 0.5;
+    }
+
+    /* ---- NAV ---- */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      display: flex; justify-content: space-between; align-items: center;
+      padding: 1.5rem 4rem;
+      background: rgba(245,243,238,0.85);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+      transition: padding var(--transition);
+    }
+    nav.scrolled { padding: 1rem 4rem; }
+    .nav-logo {
+      font-family: var(--mono);
+      font-size: 0.75rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--accent);
+    }
+    .nav-links { display: flex; gap: 2.5rem; list-style: none; }
+    .nav-links a {
+      font-family: var(--mono);
+      font-size: 0.7rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--fg-muted);
+      text-decoration: none;
+      position: relative;
+      transition: color var(--transition);
+    }
+    .nav-links a::after {
+      content: '';
+      position: absolute; bottom: -2px; left: 0;
+      width: 0; height: 1px;
+      background: var(--accent);
+      transition: width var(--transition);
+    }
+    .nav-links a:hover { color: var(--accent); }
+    .nav-links a:hover::after { width: 100%; }
+
+    /* ---- HERO ---- */
+    #home {
+      min-height: 100vh;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      align-items: center;
+      padding: 8rem 4rem 4rem;
+      position: relative;
+      overflow: hidden;
+    }
+    .hero-grid-bg {
+      position: absolute; inset: 0; z-index: 0;
+      background-image:
+        linear-gradient(var(--border) 1px, transparent 1px),
+        linear-gradient(90deg, var(--border) 1px, transparent 1px);
+      background-size: 60px 60px;
+      opacity: 0.5;
+    }
+    .hero-content { position: relative; z-index: 1; }
+    .hero-tag {
+      font-family: var(--mono);
+      font-size: 0.7rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--accent);
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      margin-bottom: 1.5rem;
+      opacity: 0;
+      animation: fadeUp 0.8s 0.2s forwards;
+    }
+    .hero-tag::before {
+      content: '';
+      width: 24px; height: 1px;
+      background: var(--accent);
+    }
+    .hero-name {
+      font-family: var(--serif);
+      font-size: clamp(3rem, 5vw, 5rem);
+      line-height: 1.05;
+      color: var(--fg);
+      margin-bottom: 0.5rem;
+      opacity: 0;
+      animation: fadeUp 0.8s 0.4s forwards;
+    }
+    .hero-name em {
+      font-style: italic;
+      color: var(--accent);
+    }
+    .hero-role {
+      font-family: var(--mono);
+      font-size: 0.85rem;
+      color: var(--fg-muted);
+      letter-spacing: 0.05em;
+      margin-bottom: 2rem;
+      opacity: 0;
+      animation: fadeUp 0.8s 0.6s forwards;
+    }
+    .hero-desc {
+      font-size: 1rem;
+      color: var(--fg-muted);
+      max-width: 440px;
+      line-height: 1.8;
+      margin-bottom: 2.5rem;
+      opacity: 0;
+      animation: fadeUp 0.8s 0.8s forwards;
+    }
+    .hero-btns {
+      display: flex; gap: 1rem; flex-wrap: wrap;
+      opacity: 0;
+      animation: fadeUp 0.8s 1s forwards;
+    }
+    .btn-primary {
+      font-family: var(--mono);
+      font-size: 0.72rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      padding: 0.85rem 2rem;
+      background: var(--accent);
+      color: #fff;
+      border: none;
+      cursor: none;
+      text-decoration: none;
+      transition: background var(--transition), transform var(--transition);
+    }
+    .btn-primary:hover { background: #1e3e2b; transform: translateY(-2px); }
+    .btn-outline {
+      font-family: var(--mono);
+      font-size: 0.72rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      padding: 0.85rem 2rem;
+      background: transparent;
+      color: var(--fg);
+      border: 1px solid var(--border);
+      cursor: none;
+      text-decoration: none;
+      transition: border-color var(--transition), color var(--transition), transform var(--transition);
+    }
+    .btn-outline:hover { border-color: var(--accent); color: var(--accent); transform: translateY(-2px); }
+
+    .hero-visual {
+      position: relative; z-index: 1;
+      display: flex; justify-content: center; align-items: center;
+      opacity: 0;
+      animation: fadeIn 1.2s 0.6s forwards;
+    }
+    .hero-avatar-wrap {
+      width: 340px; height: 340px;
+      position: relative;
+    }
+    .hero-avatar-bg {
+      position: absolute; inset: 0;
+      background: var(--bg2);
+      border: 1px solid var(--border);
+      transform: rotate(3deg);
+      transition: transform var(--transition);
+    }
+    .hero-avatar-wrap:hover .hero-avatar-bg { transform: rotate(6deg); }
+    .hero-avatar {
+      position: absolute; inset: 0;
+      background: linear-gradient(135deg, var(--accent) 0%, #4a7c5c 100%);
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center;
+      gap: 0.5rem;
+    }
+    .avatar-initials {
+      font-family: var(--serif);
+      font-size: 5rem;
+      color: rgba(255,255,255,0.9);
+      line-height: 1;
+    }
+    .avatar-label {
+      font-family: var(--mono);
+      font-size: 0.6rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.6);
+    }
+    .hero-stats {
+      position: absolute;
+      bottom: -1.5rem; right: -1.5rem;
+      background: var(--card);
+      border: 1px solid var(--border);
+      padding: 1rem 1.5rem;
+      display: flex; gap: 1.5rem;
+    }
+    .stat { text-align: center; }
+    .stat-num {
+      font-family: var(--serif);
+      font-size: 1.6rem;
+      color: var(--accent);
+      line-height: 1;
+    }
+    .stat-label {
+      font-family: var(--mono);
+      font-size: 0.6rem;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--fg-muted);
+      margin-top: 0.2rem;
+    }
+
+    /* ---- SECTIONS ---- */
+    section { padding: 6rem 4rem; }
+    .section-header {
+      display: flex; align-items: center; gap: 1.5rem;
+      margin-bottom: 4rem;
+    }
+    .section-num {
+      font-family: var(--mono);
+      font-size: 0.65rem;
+      letter-spacing: 0.2em;
+      color: var(--accent);
+    }
+    .section-line { flex: 1; height: 1px; background: var(--border); }
+    .section-title {
+      font-family: var(--serif);
+      font-size: clamp(2rem, 3.5vw, 3rem);
+      color: var(--fg);
+      line-height: 1.1;
+    }
+
+    /* ---- ABOUT ---- */
+    #about { background: var(--bg); }
+    .about-grid {
+      display: grid;
+      grid-template-columns: 1fr 1.4fr;
+      gap: 5rem;
+      align-items: start;
+    }
+    .about-left {}
+    .about-right {}
+    .about-text {
+      font-size: 1.05rem;
+      color: var(--fg-muted);
+      line-height: 1.9;
+      margin-bottom: 1.5rem;
+    }
+    .about-text strong { color: var(--fg); font-weight: 500; }
+    .about-highlight {
+      font-family: var(--serif);
+      font-size: 1.4rem;
+      font-style: italic;
+      color: var(--accent);
+      line-height: 1.5;
+      border-left: 2px solid var(--accent);
+      padding-left: 1.5rem;
+      margin: 2rem 0;
+    }
+    .cert-list { display: flex; flex-direction: column; gap: 0.75rem; margin-top: 1rem; }
+    .cert-item {
+      display: flex; align-items: flex-start; gap: 1rem;
+      padding: 1rem 1.25rem;
+      background: var(--card);
+      border: 1px solid var(--border);
+      transition: border-color var(--transition), transform var(--transition);
+    }
+    .cert-item:hover { border-color: var(--accent); transform: translateX(4px); }
+    .cert-icon {
+      font-size: 1.1rem;
+      color: var(--accent);
+      margin-top: 0.1rem;
+      flex-shrink: 0;
+    }
+    .cert-info {}
+    .cert-name {
+      font-size: 0.85rem;
+      font-weight: 500;
+      color: var(--fg);
+      line-height: 1.4;
+    }
+    .cert-org {
+      font-family: var(--mono);
+      font-size: 0.65rem;
+      color: var(--accent);
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      margin-top: 0.2rem;
+    }
+
+    /* ---- SKILLS ---- */
+    #skills { background: var(--bg2); }
+    .skills-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.5rem;
+    }
+    .skill-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      padding: 2rem;
+      position: relative;
+      overflow: hidden;
+      transition: transform var(--transition), border-color var(--transition), box-shadow var(--transition);
+    }
+    .skill-card::before {
+      content: '';
+      position: absolute; top: 0; left: 0;
+      width: 3px; height: 0;
+      background: var(--accent);
+      transition: height var(--transition);
+    }
+    .skill-card:hover { transform: translateY(-4px); border-color: var(--accent-light); box-shadow: 0 12px 40px var(--accent-glow); }
+    .skill-card:hover::before { height: 100%; }
+    .skill-category {
+      font-family: var(--mono);
+      font-size: 0.62rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 1rem;
+    }
+    .skill-card-title {
+      font-family: var(--serif);
+      font-size: 1.3rem;
+      margin-bottom: 1.25rem;
+    }
+    .skill-tags { display: flex; flex-wrap: wrap; gap: 0.5rem; }
+    .skill-tag {
+      font-family: var(--mono);
+      font-size: 0.65rem;
+      padding: 0.3rem 0.7rem;
+      background: var(--bg2);
+      color: var(--fg-muted);
+      border: 1px solid var(--border);
+      letter-spacing: 0.05em;
+    }
+
+    /* ---- PROJECTS ---- */
+    #projects { background: var(--bg); }
+    .projects-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 2rem;
+    }
+    .project-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      overflow: hidden;
+      position: relative;
+      transition: transform var(--transition), box-shadow var(--transition);
+    }
+    .project-card:hover { transform: translateY(-6px); box-shadow: 0 20px 60px var(--accent-glow); }
+    .project-visual {
+      height: 200px;
+      display: flex; align-items: center; justify-content: center;
+      position: relative;
+      overflow: hidden;
+    }
+    .project-visual-1 { background: linear-gradient(135deg, #2D5A3D 0%, #1a3526 100%); }
+    .project-visual-2 { background: linear-gradient(135deg, #3D4A2D 0%, #252e1a 100%); }
+    .project-icon {
+      font-size: 4rem;
+      opacity: 0.6;
+      transition: transform var(--transition), opacity var(--transition);
+    }
+    .project-card:hover .project-icon { transform: scale(1.1); opacity: 0.9; }
+    .project-body { padding: 2rem; }
+    .project-meta {
+      display: flex; justify-content: space-between; align-items: center;
+      margin-bottom: 0.75rem;
+    }
+    .project-num {
+      font-family: var(--mono);
+      font-size: 0.62rem;
+      color: var(--accent);
+      letter-spacing: 0.15em;
+    }
+    .project-badge {
+      font-family: var(--mono);
+      font-size: 0.6rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      padding: 0.2rem 0.6rem;
+      background: var(--accent-glow);
+      color: var(--accent);
+      border: 1px solid rgba(45,90,61,0.2);
+    }
+    .project-name {
+      font-family: var(--serif);
+      font-size: 1.6rem;
+      margin-bottom: 0.75rem;
+    }
+    .project-desc {
+      font-size: 0.9rem;
+      color: var(--fg-muted);
+      line-height: 1.7;
+      margin-bottom: 1.5rem;
+    }
+    .project-stack { display: flex; flex-wrap: wrap; gap: 0.4rem; }
+    .stack-tag {
+      font-family: var(--mono);
+      font-size: 0.6rem;
+      padding: 0.25rem 0.6rem;
+      background: transparent;
+      color: var(--fg-muted);
+      border: 1px solid var(--border);
+    }
+
+    /* ---- CONTACT ---- */
+    #contact { background: var(--bg2); }
+    .contact-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 5rem;
+      align-items: start;
+    }
+    .contact-left {}
+    .contact-intro {
+      font-family: var(--serif);
+      font-size: 1.8rem;
+      font-style: italic;
+      line-height: 1.4;
+      color: var(--fg);
+      margin-bottom: 2rem;
+    }
+    .contact-links { display: flex; flex-direction: column; gap: 0.75rem; }
+    .contact-link {
+      display: flex; align-items: center; gap: 1rem;
+      font-family: var(--mono);
+      font-size: 0.8rem;
+      color: var(--fg-muted);
+      text-decoration: none;
+      letter-spacing: 0.05em;
+      transition: color var(--transition);
+      cursor: none;
+    }
+    .contact-link:hover { color: var(--accent); }
+    .contact-link-icon { color: var(--accent); font-size: 1rem; }
+    .contact-form { display: flex; flex-direction: column; gap: 1rem; }
+    .form-group { display: flex; flex-direction: column; gap: 0.4rem; }
+    .form-label {
+      font-family: var(--mono);
+      font-size: 0.65rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--fg-muted);
+    }
+    .form-input, .form-textarea {
+      font-family: var(--sans);
+      font-size: 0.9rem;
+      padding: 0.85rem 1rem;
+      background: var(--card);
+      color: var(--fg);
+      border: 1px solid var(--border);
+      outline: none;
+      resize: none;
+      transition: border-color var(--transition);
+      cursor: none;
+    }
+    .form-input:focus, .form-textarea:focus { border-color: var(--accent); }
+    .form-textarea { min-height: 120px; }
+    .form-submit {
+      font-family: var(--mono);
+      font-size: 0.72rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      padding: 1rem 2rem;
+      background: var(--accent);
+      color: #fff;
+      border: none;
+      cursor: none;
+      align-self: flex-start;
+      transition: background var(--transition), transform var(--transition);
+    }
+    .form-submit:hover { background: #1e3e2b; transform: translateY(-2px); }
+
+    /* ---- FOOTER ---- */
+    footer {
+      padding: 2.5rem 4rem;
+      border-top: 1px solid var(--border);
+      display: flex; justify-content: space-between; align-items: center;
+    }
+    .footer-copy {
+      font-family: var(--mono);
+      font-size: 0.65rem;
+      color: var(--fg-muted);
+      letter-spacing: 0.1em;
+    }
+    .footer-made {
+      font-family: var(--mono);
+      font-size: 0.65rem;
+      color: var(--fg-muted);
+      letter-spacing: 0.1em;
+    }
+    .footer-made span { color: var(--accent); }
+
+    /* ---- SCROLL REVEAL ---- */
+    .reveal {
+      opacity: 0;
+      transform: translateY(30px);
+      transition: opacity 0.7s ease, transform 0.7s ease;
+    }
+    .reveal.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* ---- CHATBOT ---- */
+    .chat-fab {
+      position: fixed;
+      bottom: 2rem; right: 2rem;
+      width: 56px; height: 56px;
+      background: var(--accent);
+      border-radius: 50%;
+      border: none;
+      cursor: none;
+      display: flex; align-items: center; justify-content: center;
+      box-shadow: 0 8px 24px rgba(45,90,61,0.3);
+      z-index: 200;
+      transition: transform var(--transition), background var(--transition);
+    }
+    .chat-fab:hover { transform: scale(1.1); background: #1e3e2b; }
+    .chat-fab svg { width: 24px; height: 24px; fill: #fff; }
+    .chat-window {
+      position: fixed;
+      bottom: 5.5rem; right: 2rem;
+      width: 380px;
+      background: var(--card);
+      border: 1px solid var(--border);
+      display: flex; flex-direction: column;
+      z-index: 200;
+      box-shadow: 0 20px 60px rgba(26,26,24,0.15);
+      opacity: 0;
+      transform: translateY(20px) scale(0.95);
+      pointer-events: none;
+      transition: opacity 0.3s, transform 0.3s;
+    }
+    .chat-window.open {
+      opacity: 1;
+      transform: translateY(0) scale(1);
+      pointer-events: all;
+    }
+    .chat-header {
+      padding: 1rem 1.25rem;
+      border-bottom: 1px solid var(--border);
+      display: flex; justify-content: space-between; align-items: center;
+      background: var(--accent);
+      color: #fff;
+    }
+    .chat-header-info { display: flex; align-items: center; gap: 0.75rem; }
+    .chat-avatar {
+      width: 32px; height: 32px;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.2);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1rem;
+    }
+    .chat-title { font-family: var(--sans); font-size: 0.85rem; font-weight: 500; }
+    .chat-subtitle { font-family: var(--mono); font-size: 0.6rem; opacity: 0.7; letter-spacing: 0.1em; }
+    .chat-close {
+      background: none; border: none; color: rgba(255,255,255,0.8);
+      cursor: none; font-size: 1.2rem; line-height: 1;
+      transition: color var(--transition);
+    }
+    .chat-close:hover { color: #fff; }
+    .chat-messages {
+      flex: 1;
+      min-height: 240px;
+      max-height: 300px;
+      overflow-y: auto;
+      padding: 1rem;
+      display: flex; flex-direction: column; gap: 0.75rem;
+    }
+    .chat-messages::-webkit-scrollbar { width: 4px; }
+    .chat-messages::-webkit-scrollbar-thumb { background: var(--border); }
+    .msg {
+      max-width: 85%;
+      padding: 0.65rem 0.9rem;
+      font-size: 0.82rem;
+      line-height: 1.5;
+    }
+    .msg-bot {
+      background: var(--bg2);
+      color: var(--fg);
+      border: 1px solid var(--border);
+      align-self: flex-start;
+      border-radius: 0 8px 8px 8px;
+    }
+    .msg-user {
+      background: var(--accent);
+      color: #fff;
+      align-self: flex-end;
+      border-radius: 8px 0 8px 8px;
+    }
+    .msg-thinking {
+      background: var(--bg2);
+      border: 1px solid var(--border);
+      align-self: flex-start;
+      padding: 0.65rem 1rem;
+    }
+    .thinking-dots { display: flex; gap: 4px; }
+    .thinking-dots span {
+      width: 6px; height: 6px;
+      background: var(--accent);
+      border-radius: 50%;
+      animation: bounce 1.2s infinite;
+    }
+    .thinking-dots span:nth-child(2) { animation-delay: 0.2s; }
+    .thinking-dots span:nth-child(3) { animation-delay: 0.4s; }
+    @keyframes bounce {
+      0%,60%,100% { transform: translateY(0); }
+      30% { transform: translateY(-6px); }
+    }
+    .chat-input-row {
+      display: flex;
+      border-top: 1px solid var(--border);
+    }
+    .chat-input {
+      flex: 1;
+      padding: 0.85rem 1rem;
+      font-family: var(--sans);
+      font-size: 0.82rem;
+      background: var(--card);
+      color: var(--fg);
+      border: none;
+      outline: none;
+      cursor: none;
+    }
+    .chat-send {
+      padding: 0 1.1rem;
+      background: var(--accent);
+      color: #fff;
+      border: none;
+      cursor: none;
+      font-size: 1rem;
+      transition: background var(--transition);
+    }
+    .chat-send:hover { background: #1e3e2b; }
+    .chat-api-notice {
+      padding: 0.5rem 1rem;
+      font-family: var(--mono);
+      font-size: 0.58rem;
+      color: var(--fg-muted);
+      text-align: center;
+      border-top: 1px solid var(--border);
+    }
+
+    /* ---- RECOMMENDED QUESTIONS CAROUSEL ---- */
+    .recommended-questions {
+      padding: 0.75rem 1rem;
+      border-top: 1px solid var(--border);
+      background: var(--bg2);
+    }
+    .rec-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 0.65rem;
+    }
+    .rec-label {
+      font-family: var(--mono);
+      font-size: 0.6rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--accent);
+      font-weight: 500;
+    }
+    .rec-nav {
+      display: flex;
+      gap: 0.5rem;
+    }
+    .rec-nav-btn {
+      background: var(--card);
+      border: 1px solid var(--border);
+      width: 22px;
+      height: 22px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: none;
+      color: var(--fg-muted);
+      font-size: 0.8rem;
+      transition: all var(--transition);
+    }
+    .rec-nav-btn:hover {
+      background: var(--accent);
+      color: #fff;
+      border-color: var(--accent);
+    }
+    .rec-carousel {
+      position: relative;
+      overflow: hidden;
+      min-height: 65px;
+    }
+    .rec-slide {
+      display: flex;
+      transition: transform 0.3s ease;
+      gap: 0.65rem;
+    }
+    .rec-question {
+      flex: 0 0 calc(50% - 0.33rem);
+      background: var(--card);
+      border: 1px solid var(--border);
+      padding: 0.6rem 0.8rem;
+      font-size: 0.7rem;
+      color: var(--fg);
+      cursor: none;
+      transition: all var(--transition);
+      display: flex;
+      align-items: center;
+      gap: 0.3rem;
+      line-height: 1.3;
+    }
+    .rec-question:hover {
+      border-color: var(--accent);
+      background: #fff;
+      transform: translateY(-2px);
+    }
+    .rec-question span {
+      color: var(--accent);
+      font-size: 0.8rem;
+    }
+    .rec-indicator {
+      display: flex;
+      justify-content: center;
+      gap: 0.35rem;
+      margin-top: 0.5rem;
+    }
+    .rec-dot {
+      width: 5px;
+      height: 5px;
+      border-radius: 50%;
+      background: var(--border);
+      transition: background var(--transition);
+      cursor: none;
+    }
+    .rec-dot.active {
+      background: var(--accent);
+      width: 12px;
+      border-radius: 10px;
+    }
+
+    /* ---- KEY FRAME ANIMATIONS ---- */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(24px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to   { opacity: 1; }
+    }
+
+    /* ---- MOBILE ---- */
+    @media (max-width: 900px) {
+      nav { padding: 1.2rem 1.5rem; }
+      .nav-links { gap: 1.5rem; }
+      #home { grid-template-columns: 1fr; padding: 7rem 1.5rem 3rem; gap: 3rem; }
+      .hero-visual { justify-content: flex-start; }
+      .hero-avatar-wrap { width: 240px; height: 240px; }
+      section { padding: 4rem 1.5rem; }
+      .about-grid, .contact-grid { grid-template-columns: 1fr; gap: 3rem; }
+      .skills-grid { grid-template-columns: 1fr; }
+      .projects-grid { grid-template-columns: 1fr; }
+      footer { flex-direction: column; gap: 0.5rem; text-align: center; }
+      .chat-window { right: 1rem; left: 1rem; width: auto; bottom: 5rem; }
+      .rec-question { flex: 0 0 100%; }
+    }
+
+    /* ---- OFFLINE MODE BADGE ---- */
+    .offline-badge {
+      display: inline-block;
+      background: #FFD166;
+      color: #1A1A18;
+      padding: 0.2rem 0.5rem;
+      border-radius: 4px;
+      font-size: 0.55rem;
+      font-weight: 600;
+      margin-left: 0.5rem;
+      letter-spacing: 0.5px;
+    }
+  </style>
+</head>
+<body>
+
+<!-- Custom Cursor -->
+<div id="cursor"></div>
+<div id="cursor-ring"></div>
+
+<!-- NAV -->
+<nav id="navbar">
+  <div class="nav-logo">BRB / Portfolio</div>
+  <ul class="nav-links">
+    <li><a href="#home">Home</a></li>
+    <li><a href="#about">About</a></li>
+    <li><a href="#skills">Skills</a></li>
+    <li><a href="#projects">Projects</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<section id="home">
+  <div class="hero-grid-bg"></div>
+  <div class="hero-content">
+    <div class="hero-tag">Available for opportunities</div>
+    <h1 class="hero-name">Bryan Ronnie<br><em>Briones</em></h1>
+    <p class="hero-role">BSIS Graduate &nbsp;·&nbsp; UI/UX Designer &nbsp;·&nbsp; Mobile Developer &nbsp;·&nbsp; Vibe Coder</p>
+    <p class="hero-desc">
+      Building clean, functional digital experiences — from sleek mobile apps to intuitive interfaces. Currently exploring the intersection of design, development, and cybersecurity.
+    </p>
+    <div class="hero-btns">
+      <a href="#projects" class="btn-primary">View Projects</a>
+      <a href="#contact" class="btn-outline">Get In Touch</a>
+    </div>
+  </div>
+  <div class="hero-visual">
+    <div class="hero-avatar-wrap">
+      <div class="hero-avatar-bg"></div>
+      <div class="hero-avatar">
+        <div class="avatar-initials">BRB</div>
+        <div class="avatar-label">Bryan Ronnie Briones</div>
+      </div>
+      <div class="hero-stats">
+        <div class="stat">
+          <div class="stat-num">2</div>
+          <div class="stat-label">Apps Built</div>
+        </div>
+        <div class="stat">
+          <div class="stat-num">3</div>
+          <div class="stat-label">Certs</div>
+        </div>
+        <div class="stat">
+          <div class="stat-num">∞</div>
+          <div class="stat-label">Curiosity</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ABOUT -->
+<section id="about">
+  <div class="section-header reveal">
+    <span class="section-num">01</span>
+    <div class="section-line"></div>
+    <h2 class="section-title">About Me</h2>
+    <div class="section-line"></div>
+  </div>
+  <div class="about-grid">
+    <div class="about-left reveal">
+      <p class="about-text">
+        I'm <strong>Bryan Ronnie Briones</strong>, a graduate of <strong>Bachelor of Science in Information Systems</strong>. I blend design thinking with technical execution — crafting mobile applications, designing user interfaces, and diving deep into system architecture.
+      </p>
+      <p class="about-about-text about-text">
+        I'm a <strong>vibe coder</strong> — someone who codes by feel, intuition, and creativity. Whether it's building a Flutter app with Firebase as the backbone, designing pixel-perfect screens on Figma, or setting up a PHP/MySQL backend, I bring both precision and passion to every project.
+      </p>
+      <div class="about-highlight">
+        "Currently sharpening my edge in cybersecurity — because knowing how to build also means knowing how to protect."
+      </div>
+      <p class="about-text">
+        I believe great software is invisible — it just works, beautifully.
+      </p>
+    </div>
+    <div class="about-right reveal">
+      <p style="font-family: var(--mono); font-size: 0.65rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--accent); margin-bottom: 1rem;">Certifications & Education</p>
+      <div class="cert-list">
+        <div class="cert-item">
+          <div class="cert-icon">🎓</div>
+          <div class="cert-info">
+            <div class="cert-name">Bachelor of Science in Information Systems</div>
+            <div class="cert-org">Academic Degree</div>
+          </div>
+        </div>
+        <div class="cert-item">
+          <div class="cert-icon">🏅</div>
+          <div class="cert-info">
+            <div class="cert-name">UI/UX Design Essential Certification</div>
+            <div class="cert-org">CIIT College</div>
+          </div>
+        </div>
+        <div class="cert-item">
+          <div class="cert-icon">🔒</div>
+          <div class="cert-info">
+            <div class="cert-name">CompTIA CySA+ (CS0-003) Complete Course & Practice Exam</div>
+            <div class="cert-org">Udemy</div>
+          </div>
+        </div>
+        <div class="cert-item">
+          <div class="cert-icon">🛡️</div>
+          <div class="cert-info">
+            <div class="cert-name">TOTAL: CompTIA Security+ Course + Practice Exam SY0-701</div>
+            <div class="cert-org">Udemy</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SKILLS -->
+<section id="skills">
+  <div class="section-header reveal">
+    <span class="section-num">02</span>
+    <div class="section-line"></div>
+    <h2 class="section-title">Skills & Stack</h2>
+    <div class="section-line"></div>
+  </div>
+  <div class="skills-grid">
+    <div class="skill-card reveal">
+      <div class="skill-category">Frontend & Design</div>
+      <div class="skill-card-title">UI/UX & Interface</div>
+      <div class="skill-tags">
+        <span class="skill-tag">Figma</span>
+        <span class="skill-tag">Flutter (UI)</span>
+        <span class="skill-tag">Responsive Design</span>
+        <span class="skill-tag">Prototyping</span>
+        <span class="skill-tag">Wireframing</span>
+        <span class="skill-tag">Design Systems</span>
+      </div>
+    </div>
+    <div class="skill-card reveal">
+      <div class="skill-category">Mobile & Backend</div>
+      <div class="skill-card-title">Development</div>
+      <div class="skill-tags">
+        <span class="skill-tag">Flutter</span>
+        <span class="skill-tag">Dart</span>
+        <span class="skill-tag">Firebase</span>
+        <span class="skill-tag">PHP</span>
+        <span class="skill-tag">MySQL</span>
+        <span class="skill-tag">REST APIs</span>
+      </div>
+    </div>
+    <div class="skill-card reveal">
+      <div class="skill-category">Programming</div>
+      <div class="skill-card-title">Languages</div>
+      <div class="skill-tags">
+        <span class="skill-tag">Python</span>
+        <span class="skill-tag">Dart</span>
+        <span class="skill-tag">PHP</span>
+        <span class="skill-tag">SQL</span>
+        <span class="skill-tag">HTML/CSS</span>
+        <span class="skill-tag">JavaScript</span>
+      </div>
+    </div>
+    <div class="skill-card reveal">
+      <div class="skill-category">Cybersecurity</div>
+      <div class="skill-card-title">Security & Analysis</div>
+      <div class="skill-tags">
+        <span class="skill-tag">CompTIA Security+</span>
+        <span class="skill-tag">CySA+</span>
+        <span class="skill-tag">Threat Analysis</span>
+        <span class="skill-tag">Network Security</span>
+        <span class="skill-tag">Vulnerability Mgmt</span>
+      </div>
+    </div>
+    <div class="skill-card reveal">
+      <div class="skill-category">Tools & Platforms</div>
+      <div class="skill-card-title">Workflow</div>
+      <div class="skill-tags">
+        <span class="skill-tag">Git / GitHub</span>
+        <span class="skill-tag">Firebase Console</span>
+        <span class="skill-tag">Android Studio</span>
+        <span class="skill-tag">VS Code</span>
+        <span class="skill-tag">Postman</span>
+      </div>
+    </div>
+    <div class="skill-card reveal">
+      <div class="skill-category">Database</div>
+      <div class="skill-card-title">Data Management</div>
+      <div class="skill-tags">
+        <span class="skill-tag">Firebase Firestore</span>
+        <span class="skill-tag">Firebase Auth</span>
+        <span class="skill-tag">MySQL</span>
+        <span class="skill-tag">phpMyAdmin</span>
+        <span class="skill-tag">Realtime DB</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PROJECTS -->
+<section id="projects">
+  <div class="section-header reveal">
+    <span class="section-num">03</span>
+    <div class="section-line"></div>
+    <h2 class="section-title">Projects</h2>
+    <div class="section-line"></div>
+  </div>
+  <div class="projects-grid">
+    <div class="project-card reveal">
+      <div class="project-visual project-visual-1">
+        <div class="project-icon">⚖️</div>
+      </div>
+      <div class="project-body">
+        <div class="project-meta">
+          <span class="project-num">Project / 01</span>
+          <span class="project-badge">Mobile App</span>
+        </div>
+        <h3 class="project-name">Fair Trade</h3>
+        <p class="project-desc">
+          A mobile application focused on fair trade and transparent commerce. Built to connect users with ethical marketplace experiences, featuring real-time data syncing and a clean, minimal interface that puts product stories first.
+        </p>
+        <div class="project-stack">
+          <span class="stack-tag">Flutter</span>
+          <span class="stack-tag">Dart</span>
+          <span class="stack-tag">Firebase</span>
+          <span class="stack-tag">Firestore</span>
+          <span class="stack-tag">Firebase Auth</span>
+        </div>
+      </div>
+    </div>
+    <div class="project-card reveal">
+      <div class="project-visual project-visual-2">
+        <div class="project-icon">🧭</div>
+      </div>
+      <div class="project-body">
+        <div class="project-meta">
+          <span class="project-num">Project / 02</span>
+          <span class="project-badge">Mobile App</span>
+        </div>
+        <h3 class="project-name">Adventure</h3>
+        <p class="project-desc">
+          An adventure and exploration mobile app designed to help users discover and track exciting activities and locations. Features dynamic content, smooth animations, and an intuitive UX crafted entirely in Figma before development.
+        </p>
+        <div class="project-stack">
+          <span class="stack-tag">Flutter</span>
+          <span class="stack-tag">Dart</span>
+          <span class="stack-tag">Firebase</span>
+          <span class="stack-tag">Figma</span>
+          <span class="stack-tag">Firestore</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact">
+  <div class="section-header reveal">
+    <span class="section-num">04</span>
+    <div class="section-line"></div>
+    <h2 class="section-title">Get In Touch</h2>
+    <div class="section-line"></div>
+  </div>
+  <div class="contact-grid">
+    <div class="contact-left reveal">
+      <p class="contact-intro">Have a project in mind, or just want to connect?</p>
+      <p style="font-size:0.95rem; color: var(--fg-muted); line-height:1.8; margin-bottom: 2rem;">
+        I'm open to freelance projects, full-time roles, and interesting collaborations — especially in mobile development, UI/UX design, or cybersecurity.
+      </p>
+      <div class="contact-links">
+        <a href="mailto:bryanronniebriones@gmail.com" class="contact-link">
+          <span class="contact-link-icon">✉</span>
+          bryanronniebriones@gmail.com
+        </a>
+        <a href="https://github.com/" target="_blank" class="contact-link">
+          <span class="contact-link-icon">⌥</span>
+          github.com/bryanbriones
+        </a>
+        <a href="https://linkedin.com/" target="_blank" class="contact-link">
+          <span class="contact-link-icon">in</span>
+          linkedin.com/in/bryanbriones
+        </a>
+        <a href="#" class="contact-link">
+          <span class="contact-link-icon">📍</span>
+          Philippines
+        </a>
+      </div>
+    </div>
+    <div class="contact-right reveal">
+      <form class="contact-form" id="contactForm">
+        <div class="form-group">
+          <label class="form-label">Name</label>
+          <input type="text" class="form-input" placeholder="Your name" />
+        </div>
+        <div class="form-group">
+          <label class="form-label">Email</label>
+          <input type="email" class="form-input" placeholder="your@email.com" />
+        </div>
+        <div class="form-group">
+          <label class="form-label">Message</label>
+          <textarea class="form-textarea" placeholder="Tell me about your project..."></textarea>
+        </div>
+        <button type="submit" class="form-submit">Send Message →</button>
+      </form>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-copy">© 2025 Bryan Ronnie Briones. All rights reserved.</div>
+  <div class="footer-made">Crafted with <span>♥</span> — Ready to Deploy</div>
+</footer>
+
+<!-- CHATBOT FAB -->
+<button class="chat-fab" id="chatFab" title="Chat with AI">
+  <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+    <path d="M12 2C6.477 2 2 6.477 2 12c0 1.89.525 3.66 1.438 5.168L2 22l4.832-1.438A9.955 9.955 0 0012 22c5.523 0 10-4.477 10-10S17.523 2 12 2zm1 14.5h-2v-2h2v2zm0-4h-2V7h2v5.5z"/>
+  </svg>
+</button>
+
+<!-- CHAT WINDOW -->
+<div class="chat-window" id="chatWindow">
+  <div class="chat-header">
+    <div class="chat-header-info">
+      <div class="chat-avatar">✦</div>
+      <div>
+        <div class="chat-title">Ask About Bryan</div>
+        <div class="chat-subtitle">Smart Assistant <span class="offline-badge">OFFLINE MODE</span></div>
+      </div>
+    </div>
+    <button class="chat-close" id="chatClose">✕</button>
+  </div>
+  <div class="chat-messages" id="chatMessages">
+    <div class="msg msg-bot">Hi! 👋 I'm Bryan's AI assistant. Ask me anything about his skills, projects, experience, or how to work with him! (⚡ Offline mode active)</div>
+  </div>
+  <div class="chat-input-row">
+    <input type="text" class="chat-input" id="chatInput" placeholder="Ask something..." />
+    <button class="chat-send" id="chatSend">➤</button>
+  </div>
+  
+  <!-- RECOMMENDED QUESTIONS CAROUSEL -->
+  <div class="recommended-questions">
+    <div class="rec-header">
+      <span class="rec-label">📋 RECOMMENDED QUESTIONS</span>
+      <div class="rec-nav">
+        <button class="rec-nav-btn" id="recPrevBtn">←</button>
+        <button class="rec-nav-btn" id="recNextBtn">→</button>
+      </div>
+    </div>
+    <div class="rec-carousel">
+      <div class="rec-slide" id="recSlide">
+        <!-- Questions will be populated by JavaScript -->
+      </div>
+    </div>
+    <div class="rec-indicator" id="recIndicator"></div>
+  </div>
+  
+  <div class="chat-api-notice">🔋 10+ pre-answered questions • Click any to ask</div>
+</div>
+
+<script>
+  // ---- SMART CHATBOT WITH RECOMMENDED QUESTIONS CAROUSEL ----
+  
+  /* ---- CURSOR ---- */
+  const cursor = document.getElementById('cursor');
+  const ring = document.getElementById('cursor-ring');
+  let mouseX = 0, mouseY = 0, ringX = 0, ringY = 0;
+  document.addEventListener('mousemove', e => {
+    mouseX = e.clientX; mouseY = e.clientY;
+    cursor.style.left = mouseX + 'px';
+    cursor.style.top = mouseY + 'px';
+  });
+  function animRing() {
+    ringX += (mouseX - ringX) * 0.18;
+    ringY += (mouseY - ringY) * 0.18;
+    ring.style.left = ringX + 'px';
+    ring.style.top = ringY + 'px';
+    requestAnimationFrame(animRing);
+  }
+  animRing();
+  document.querySelectorAll('a,button,input,textarea,.skill-card,.project-card,.cert-item').forEach(el => {
+    el.addEventListener('mouseenter', () => {
+      cursor.style.width = '18px'; cursor.style.height = '18px';
+      ring.style.width = '50px'; ring.style.height = '50px';
+    });
+    el.addEventListener('mouseleave', () => {
+      cursor.style.width = '10px'; cursor.style.height = '10px';
+      ring.style.width = '32px'; ring.style.height = '32px';
+    });
+  });
+
+  /* ---- NAVBAR SCROLL ---- */
+  window.addEventListener('scroll', () => {
+    document.getElementById('navbar').classList.toggle('scrolled', window.scrollY > 60);
+  });
+
+  /* ---- SCROLL REVEAL ---- */
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach((e, i) => {
+      if (e.isIntersecting) {
+        e.target.style.transitionDelay = (e.target.dataset.delay || 0) + 'ms';
+        e.target.classList.add('visible');
+      }
+    });
+  }, { threshold: 0.12 });
+  document.querySelectorAll('.reveal').forEach((el, i) => {
+    el.dataset.delay = (i % 4) * 80;
+    observer.observe(el);
+  });
+
+  /* ---- FORM ---- */
+  document.getElementById('contactForm').addEventListener('submit', e => {
+    e.preventDefault();
+    const btn = e.target.querySelector('.form-submit');
+    btn.textContent = 'Message Sent! ✓';
+    btn.style.background = '#1e3e2b';
+    setTimeout(() => { btn.textContent = 'Send Message →'; btn.style.background = ''; }, 3000);
+  });
+
+  /* ---- CHATBOT WITH RECOMMENDED QUESTIONS ---- */
+  const chatFab = document.getElementById('chatFab');
+  const chatWindow = document.getElementById('chatWindow');
+  const chatClose = document.getElementById('chatClose');
+  const chatMessages = document.getElementById('chatMessages');
+  const chatInput = document.getElementById('chatInput');
+  const chatSend = document.getElementById('chatSend');
+  const recSlide = document.getElementById('recSlide');
+  const recIndicator = document.getElementById('recIndicator');
+  const recPrevBtn = document.getElementById('recPrevBtn');
+  const recNextBtn = document.getElementById('recNextBtn');
+
+  chatFab.onclick = () => chatWindow.classList.toggle('open');
+  chatClose.onclick = () => chatWindow.classList.remove('open');
+
+  function appendMsg(type, text) {
+    const div = document.createElement('div');
+    div.className = 'msg ' + (type === 'bot' ? 'msg-bot' : 'msg-user');
+    div.textContent = text;
+    chatMessages.appendChild(div);
+    chatMessages.scrollTop = chatMessages.scrollHeight;
+    return div;
+  }
+
+  function showThinking() {
+    const div = document.createElement('div');
+    div.className = 'msg msg-thinking';
+    div.id = 'thinkingMsg';
+    div.innerHTML = '<div class="thinking-dots"><span></span><span></span><span></span></div>';
+    chatMessages.appendChild(div);
+    chatMessages.scrollTop = chatMessages.scrollHeight;
+  }
+
+  function removeThinking() {
+    const t = document.getElementById('thinkingMsg');
+    if (t) t.remove();
+  }
+
+  // ----- RECOMMENDED QUESTIONS DATABASE (10+ questions with answers) -----
+  const recommendedQA = [
+    {
+      question: "🎓 What are Bryan's certifications?",
+      answer: "Bryan has 3 certifications: 1) UI/UX Design Essential from CIIT College, 2) CompTIA CySA+ (CS0-003), and 3) CompTIA Security+ (SY0-701). He's a BSIS graduate."
+    },
+    {
+      question: "📱 What projects has Bryan built?",
+      answer: "Bryan built two mobile apps: 'Fair Trade' (ethical commerce marketplace) and 'Adventure' (exploration & activity tracker). Both use Flutter, Dart, and Firebase."
+    },
+    {
+      question: "💻 What are Bryan's main skills?",
+      answer: "Bryan specializes in Flutter, Dart, Firebase, UI/UX design with Figma, PHP, MySQL, and is studying cybersecurity (Security+, CySA+)."
+    },
+    {
+      question: "🔧 What tech stack does Bryan use?",
+      answer: "Frontend: Flutter, Figma. Backend: Firebase (Firestore, Auth), PHP/MySQL. Tools: Git, VS Code, Android Studio, Postman."
+    },
+    {
+      question: "📧 How to contact Bryan?",
+      answer: "Email: bryanronniebriones@gmail.com | GitHub: github.com/bryanbriones | LinkedIn: linkedin.com/in/bryanbriones | Location: Philippines"
+    },
+    {
+      question: "🤝 Is Bryan available for work?",
+      answer: "Yes! Bryan is open to freelance projects, full-time roles, and collaborations — especially in mobile development, UI/UX design, or cybersecurity."
+    },
+    {
+      question: "🧠 What is a 'vibe coder'?",
+      answer: "Bryan describes himself as a 'vibe coder' — he codes with intuition, creativity, and flow rather than rigid rules. It's about building with feeling and passion."
+    },
+    {
+      question: "🛡️ What cybersecurity certs?",
+      answer: "Bryan holds CompTIA Security+ and CySA+ certifications. He's actively studying to strengthen his security knowledge."
+    },
+    {
+      question: "⚖️ Tell me about Fair Trade app",
+      answer: "Fair Trade is a mobile app for ethical commerce. Built with Flutter, Dart, Firebase Firestore, and Firebase Auth. Focuses on transparent marketplace experiences."
+    },
+    {
+      question: "🧭 Tell me about Adventure app",
+      answer: "Adventure is an exploration app designed in Figma and built with Flutter/Firebase. Helps users discover activities and locations with smooth animations."
+    },
+    {
+      question: "🎨 Does Bryan use Figma?",
+      answer: "Yes! Bryan designs all his UIs in Figma first — pixel-perfect, responsive, and user-centered before any code is written."
+    },
+    {
+      question: "🔥 Firebase expertise?",
+      answer: "Bryan is proficient with Firebase: Firestore, Authentication, Realtime Database, and hosting. It's his primary backend for mobile apps."
+    }
+  ];
+
+  // Carousel state
+  let currentSlide = 0;
+  const QUESTIONS_PER_SLIDE = window.innerWidth <= 900 ? 1 : 2;
+  const totalSlides = Math.ceil(recommendedQA.length / QUESTIONS_PER_SLIDE);
+
+  // Render recommended questions
+  function renderCarousel() {
+    // Render slide
+    const startIdx = currentSlide * QUESTIONS_PER_SLIDE;
+    const endIdx = Math.min(startIdx + QUESTIONS_PER_SLIDE, recommendedQA.length);
+    const slideQuestions = recommendedQA.slice(startIdx, endIdx);
+    
+    recSlide.innerHTML = slideQuestions.map(qa => `
+      <div class="rec-question" data-question="${qa.question.replace(/"/g, '&quot;')}" data-answer="${qa.answer.replace(/"/g, '&quot;')}">
+        <span>${qa.question.split(' ')[0]}</span> ${qa.question}
+      </div>
+    `).join('');
+    
+    // Render indicators
+    let dotsHtml = '';
+    for (let i = 0; i < totalSlides; i++) {
+      dotsHtml += `<span class="rec-dot ${i === currentSlide ? 'active' : ''}" data-slide="${i}"></span>`;
+    }
+    recIndicator.innerHTML = dotsHtml;
+    
+    // Add click handlers to questions
+    document.querySelectorAll('.rec-question').forEach(el => {
+      el.addEventListener('click', function(e) {
+        e.preventDefault();
+        const question = this.dataset.question;
+        const answer = this.dataset.answer;
+        
+        // Show user message with question
+        appendMsg('user', question);
+        // Show thinking animation
+        showThinking();
+        // Simulate typing delay
+        setTimeout(() => {
+          removeThinking();
+          appendMsg('bot', answer);
+        }, 400);
+      });
+    });
+    
+    // Add click handlers to dots
+    document.querySelectorAll('.rec-dot').forEach(dot => {
+      dot.addEventListener('click', function() {
+        const slideIndex = parseInt(this.dataset.slide);
+        if (!isNaN(slideIndex)) {
+          currentSlide = slideIndex;
+          renderCarousel();
+        }
+      });
+    });
+  }
+
+  // Navigation
+  recPrevBtn.addEventListener('click', () => {
+    currentSlide = Math.max(0, currentSlide - 1);
+    renderCarousel();
+  });
+  
+  recNextBtn.addEventListener('click', () => {
+    currentSlide = Math.min(totalSlides - 1, currentSlide + 1);
+    renderCarousel();
+  });
+
+  // Initial render
+  renderCarousel();
+
+  // Complete knowledge base for free text questions
+  const knowledgeBase = {
+    skills: "Bryan's main skills include: Flutter, Dart, Firebase, PHP, MySQL, Figma, UI/UX design, and he's currently studying cybersecurity (CompTIA Security+ and CySA+).",
+    projects: "Bryan has built two main projects: 1) Fair Trade — ethical commerce mobile app with Flutter & Firebase, and 2) Adventure — exploration app designed in Figma, built with Flutter.",
+    experience: "Bryan is a BSIS graduate with experience in full mobile app development. He's a 'vibe coder' who codes with intuition and creativity.",
+    education: "Bryan graduated with a Bachelor of Science in Information Systems. He holds certifications in UI/UX Design (CIIT), CompTIA CySA+, and CompTIA Security+.",
+    cert: "Bryan has 3 certifications: UI/UX Design Essential, CompTIA CySA+, and CompTIA Security+. He's actively expanding his cybersecurity knowledge.",
+    certificate: "Bryan has 3 certifications: UI/UX Design Essential, CompTIA CySA+, and CompTIA Security+. He's actively expanding his cybersecurity knowledge.",
+    certification: "Bryan has 3 certifications: UI/UX Design Essential, CompTIA CySA+, and CompTIA Security+. He's actively expanding his cybersecurity knowledge.",
+    contact: "You can reach Bryan at bryanronniebriones@gmail.com or through his GitHub and LinkedIn. He's based in the Philippines and open to opportunities.",
+    email: "Bryan's email is bryanronniebriones@gmail.com",
+    phone: "No public phone number — please use email or LinkedIn to connect.",
+    location: "Bryan is based in the Philippines.",
+    github: "Bryan's GitHub: github.com/bryanbriones",
+    linkedin: "Bryan's LinkedIn: linkedin.com/in/bryanbriones",
+    hire: "Yes, Bryan is available for freelance, full-time roles, and collaborations — especially in mobile dev, UI/UX, or cybersecurity.",
+    fairtrade: "Fair Trade is Bryan's ethical commerce mobile app built with Flutter, Dart, Firebase Firestore, and Firebase Auth.",
+    adventure: "Adventure is an exploration app built with Flutter and Firebase, designed in Figma. It helps users discover activities and locations.",
+    flutter: "Bryan is proficient in Flutter and Dart — he's built 2 complete mobile apps with Firebase backend.",
+    firebase: "Bryan uses Firebase extensively: Firestore, Authentication, Realtime Database. It's his go-to backend solution.",
+    figma: "Bryan designs all his UIs in Figma before development — pixel-perfect, responsive, and user-centered.",
+    php: "Bryan also works with PHP and MySQL for backend development.",
+    python: "Bryan knows Python programming for various applications.",
+    database: "Bryan works with Firebase Firestore, Firebase Auth, MySQL, and phpMyAdmin.",
+    security: "Bryan is currently studying cybersecurity and holds CompTIA Security+ and CySA+ certifications. He's passionate about secure development.",
+    cysa: "Bryan has completed the CompTIA CySA+ (CS0-003) course and practice exam on Udemy.",
+    securityplus: "Bryan has completed the TOTAL: CompTIA Security+ Course + Practice Exam SY0-701 on Udemy.",
+    "security+": "Bryan has completed the TOTAL: CompTIA Security+ Course + Practice Exam SY0-701 on Udemy.",
+    vibe: "Yes! Bryan is a self-described 'vibe coder' — he codes with intuition, creativity, and flow, not just rigid rules.",
+    "vibe coder": "Yes! Bryan is a self-described 'vibe coder' — he codes with intuition, creativity, and flow, not just rigid rules.",
+    portfolio: "This portfolio showcases Bryan's skills, projects, and certifications. Built with custom HTML/CSS/JS.",
+    hello: "Hi there! 👋 I'm Bryan's virtual assistant. Ask me about his skills, projects, certifications, or how to contact him.",
+    hi: "Hello! 👋 What would you like to know about Bryan?",
+    hey: "Hey there! 👋 I can tell you about Bryan's work, skills, or projects.",
+    thanks: "You're welcome! 😊 Feel free to ask anything else about Bryan.",
+    thank: "You're welcome! 😊 Feel free to ask anything else about Bryan.",
+    bye: "Thanks for chatting! 👋 Feel free to come back if you have more questions about Bryan.",
+    default: "I can answer questions about Bryan's skills (Flutter, Firebase, Figma, cybersecurity), his two projects (Fair Trade and Adventure), certifications, education, or contact info. What would you like to know?"
+  };
+
+  function generateResponse(question) {
+    question = question.toLowerCase().trim();
+    
+    // Direct keyword matching
+    for (const [keyword, response] of Object.entries(knowledgeBase)) {
+      if (question.includes(keyword)) {
+        return response;
+      }
+    }
+    
+    // Multi-word and contextual matching
+    if (question.includes("can you") || question.includes("what can") || question.includes("help")) {
+      return knowledgeBase.default;
+    }
+    
+    if (question.includes("who is") || question.includes("tell me about bryan") || question.includes("about him")) {
+      return "Bryan Ronnie Briones is a BSIS graduate, UI/UX designer, and mobile developer. He's a 'vibe coder' who builds Flutter apps with Firebase, designs in Figma, and is currently studying cybersecurity. He's open to opportunities!";
+    }
+    
+    if (question.includes("work with") || question.includes("collaborate") || question.includes("opportunities")) {
+      return knowledgeBase.hire;
+    }
+    
+    if (question.includes("how many") && (question.includes("project") || question.includes("app"))) {
+      return "Bryan has built 2 complete mobile apps: Fair Trade and Adventure. Both use Flutter and Firebase.";
+    }
+    
+    if (question.includes("what") && (question.includes("tech") || question.includes("stack") || question.includes("technology"))) {
+      return knowledgeBase.skills;
+    }
+    
+    // Default fallback
+    return knowledgeBase.default;
+  }
+
+  async function sendChat() {
+    const msg = chatInput.value.trim();
+    if (!msg) return;
+    
+    chatInput.value = '';
+    appendMsg('user', msg);
+    showThinking();
+    
+    // Simulate network delay for natural feel
+    await new Promise(resolve => setTimeout(resolve, 300 + Math.random() * 200));
+    
+    removeThinking();
+    const response = generateResponse(msg);
+    appendMsg('bot', response);
+  }
+
+  chatSend.onclick = sendChat;
+  chatInput.addEventListener('keydown', e => { if (e.key === 'Enter') sendChat(); });
+
+  // Re-render on window resize
+  window.addEventListener('resize', function() {
+    const newQuestionsPerSlide = window.innerWidth <= 900 ? 1 : 2;
+    if (newQuestionsPerSlide !== QUESTIONS_PER_SLIDE) {
+      location.reload(); // Simple reload to reset carousel
+    }
+  });
+
+  console.log('✅ Chatbot running with 12+ recommended questions and answers!');
+</script>
+
+</body>
+</html>
