@@ -1,0 +1,2064 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SOLE STUDIO — Premium Footwear</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=DM+Sans:wght@300;400;500&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --cream: #F5F0E8;
+    --warm-white: #FDFAF5;
+    --black: #0D0D0D;
+    --charcoal: #1A1A1A;
+    --dark-gray: #2C2C2C;
+    --mid-gray: #6B6B6B;
+    --light-gray: #C8C4BC;
+    --accent: #C8A97E;
+    --accent-dark: #A0834E;
+    --accent-light: #E8D5B8;
+    --red: #D4433B;
+    --green: #3B7A57;
+  }
+
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    background: var(--warm-white);
+    color: var(--black);
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 300;
+    overflow-x: hidden;
+    cursor: none;
+  }
+
+  /* Custom Cursor */
+  .cursor {
+    position: fixed;
+    width: 12px;
+    height: 12px;
+    background: var(--black);
+    border-radius: 50%;
+    pointer-events: none;
+    z-index: 9999;
+    transform: translate(-50%, -50%);
+    transition: transform 0.1s ease, width 0.3s ease, height 0.3s ease, background 0.3s ease;
+  }
+
+  .cursor-ring {
+    position: fixed;
+    width: 40px;
+    height: 40px;
+    border: 1px solid var(--black);
+    border-radius: 50%;
+    pointer-events: none;
+    z-index: 9998;
+    transform: translate(-50%, -50%);
+    transition: transform 0.15s ease, width 0.3s ease, height 0.3s ease, opacity 0.3s ease;
+    opacity: 0.5;
+  }
+
+  .cursor.hovered { width: 8px; height: 8px; background: var(--accent); }
+  .cursor-ring.hovered { width: 60px; height: 60px; border-color: var(--accent); opacity: 1; }
+
+  /* NAV */
+  nav {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 1000;
+    padding: 28px 60px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    mix-blend-mode: normal;
+    transition: background 0.4s ease, padding 0.4s ease;
+  }
+
+  nav.scrolled {
+    background: rgba(253, 250, 245, 0.95);
+    backdrop-filter: blur(20px);
+    padding: 18px 60px;
+    border-bottom: 1px solid rgba(0,0,0,0.06);
+  }
+
+  .nav-logo {
+    font-family: 'Playfair Display', serif;
+    font-size: 22px;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+    color: var(--black);
+    text-decoration: none;
+  }
+
+  .nav-logo span {
+    color: var(--accent);
+  }
+
+  .nav-links {
+    display: flex;
+    gap: 40px;
+    list-style: none;
+  }
+
+  .nav-links a {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--charcoal);
+    text-decoration: none;
+    transition: color 0.3s ease;
+    position: relative;
+  }
+
+  .nav-links a::after {
+    content: '';
+    position: absolute;
+    bottom: -4px;
+    left: 0;
+    width: 0;
+    height: 1px;
+    background: var(--accent);
+    transition: width 0.3s ease;
+  }
+
+  .nav-links a:hover { color: var(--accent); }
+  .nav-links a:hover::after { width: 100%; }
+
+  .nav-actions {
+    display: flex;
+    align-items: center;
+    gap: 24px;
+  }
+
+  .nav-cart {
+    position: relative;
+    width: 44px;
+    height: 44px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--black);
+    border-radius: 50%;
+    cursor: none;
+    transition: background 0.3s ease, transform 0.3s ease;
+  }
+
+  .nav-cart:hover { background: var(--accent); transform: scale(1.05); }
+
+  .nav-cart svg { width: 18px; height: 18px; stroke: white; fill: none; stroke-width: 1.5; }
+
+  .cart-badge {
+    position: absolute;
+    top: -4px;
+    right: -4px;
+    width: 18px;
+    height: 18px;
+    background: var(--red);
+    border-radius: 50%;
+    font-family: 'DM Mono', monospace;
+    font-size: 9px;
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  /* HERO */
+  .hero {
+    min-height: 100vh;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .hero-left {
+    background: var(--black);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 140px 80px 80px 80px;
+    position: relative;
+    overflow: hidden;
+    animation: fadeInLeft 1s ease 0.2s both;
+  }
+
+  .hero-left::before {
+    content: '';
+    position: absolute;
+    top: -100px;
+    left: -100px;
+    width: 500px;
+    height: 500px;
+    background: radial-gradient(circle, rgba(200, 169, 126, 0.15) 0%, transparent 70%);
+    pointer-events: none;
+  }
+
+  .hero-tag {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 24px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    animation: fadeInLeft 1s ease 0.4s both;
+  }
+
+  .hero-tag::before {
+    content: '';
+    width: 40px;
+    height: 1px;
+    background: var(--accent);
+  }
+
+  .hero-title {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(56px, 7vw, 88px);
+    line-height: 0.95;
+    color: var(--warm-white);
+    font-weight: 900;
+    margin-bottom: 32px;
+    animation: fadeInLeft 1s ease 0.5s both;
+  }
+
+  .hero-title em {
+    font-style: italic;
+    color: var(--accent);
+  }
+
+  .hero-subtitle {
+    font-size: 15px;
+    line-height: 1.7;
+    color: var(--light-gray);
+    max-width: 380px;
+    margin-bottom: 48px;
+    animation: fadeInLeft 1s ease 0.6s both;
+  }
+
+  .hero-buttons {
+    display: flex;
+    gap: 16px;
+    animation: fadeInLeft 1s ease 0.7s both;
+  }
+
+  .btn-primary {
+    padding: 16px 36px;
+    background: var(--accent);
+    color: var(--black);
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    border: none;
+    cursor: none;
+    transition: background 0.3s ease, transform 0.3s ease;
+    text-decoration: none;
+    display: inline-block;
+  }
+
+  .btn-primary:hover { background: var(--accent-dark); transform: translateY(-2px); }
+
+  .btn-outline {
+    padding: 16px 36px;
+    background: transparent;
+    color: var(--warm-white);
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    border: 1px solid rgba(255,255,255,0.3);
+    cursor: none;
+    transition: border-color 0.3s ease, color 0.3s ease, transform 0.3s ease;
+    text-decoration: none;
+    display: inline-block;
+  }
+
+  .btn-outline:hover { border-color: var(--accent); color: var(--accent); transform: translateY(-2px); }
+
+  .hero-stats {
+    display: flex;
+    gap: 40px;
+    margin-top: 60px;
+    padding-top: 40px;
+    border-top: 1px solid rgba(255,255,255,0.08);
+    animation: fadeInLeft 1s ease 0.8s both;
+  }
+
+  .stat-item {}
+  .stat-num {
+    font-family: 'Playfair Display', serif;
+    font-size: 32px;
+    font-weight: 700;
+    color: var(--warm-white);
+  }
+  .stat-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--mid-gray);
+    margin-top: 4px;
+  }
+
+  .hero-right {
+    background: var(--cream);
+    position: relative;
+    overflow: hidden;
+    animation: fadeIn 1s ease 0.3s both;
+  }
+
+  .hero-image-container {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+  }
+
+  .hero-shoe-visual {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 80px 60px 40px;
+  }
+
+  .shoe-mockup {
+    width: 100%;
+    max-width: 520px;
+    aspect-ratio: 4/3;
+    background: linear-gradient(135deg, #E8E0D0 0%, #D8CEBC 50%, #C8B89A 100%);
+    border-radius: 4px;
+    position: relative;
+    overflow: hidden;
+    box-shadow: 0 40px 80px rgba(0,0,0,0.15), 0 10px 20px rgba(0,0,0,0.08);
+    animation: float 6s ease-in-out infinite;
+  }
+
+  @keyframes float {
+    0%, 100% { transform: translateY(0px); }
+    50% { transform: translateY(-12px); }
+  }
+
+  /* Shoe SVG illustration */
+  .shoe-svg-wrap {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .shoe-label {
+    position: absolute;
+    bottom: 24px;
+    left: 24px;
+    right: 24px;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+  }
+
+  .shoe-name {
+    font-family: 'Playfair Display', serif;
+    font-size: 22px;
+    font-weight: 700;
+    color: var(--charcoal);
+  }
+
+  .shoe-price-hero {
+    font-family: 'DM Mono', monospace;
+    font-size: 18px;
+    font-weight: 500;
+    color: var(--accent-dark);
+  }
+
+  .hero-right-info {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    padding: 28px 60px;
+    background: white;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-top: 1px solid rgba(0,0,0,0.06);
+  }
+
+  .new-arrival-tag {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--green);
+    background: rgba(59, 122, 87, 0.08);
+    padding: 6px 14px;
+    border-radius: 2px;
+  }
+
+  .color-dots {
+    display: flex;
+    gap: 8px;
+  }
+
+  .color-dot {
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    cursor: none;
+    transition: transform 0.3s ease;
+    border: 2px solid transparent;
+  }
+
+  .color-dot:hover { transform: scale(1.3); }
+  .color-dot.active { border-color: var(--charcoal); }
+
+  .scroll-indicator {
+    position: absolute;
+    bottom: 48px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    z-index: 10;
+  }
+
+  .scroll-text {
+    font-family: 'DM Mono', monospace;
+    font-size: 9px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--mid-gray);
+    writing-mode: vertical-rl;
+  }
+
+  .scroll-line {
+    width: 1px;
+    height: 60px;
+    background: linear-gradient(to bottom, var(--mid-gray), transparent);
+    animation: scrollPulse 2s ease-in-out infinite;
+  }
+
+  @keyframes scrollPulse {
+    0% { transform: scaleY(0); transform-origin: top; }
+    50% { transform: scaleY(1); transform-origin: top; }
+    51% { transform: scaleY(1); transform-origin: bottom; }
+    100% { transform: scaleY(0); transform-origin: bottom; }
+  }
+
+  /* MARQUEE */
+  .marquee-section {
+    background: var(--black);
+    padding: 20px 0;
+    overflow: hidden;
+    border-top: 1px solid rgba(255,255,255,0.05);
+    border-bottom: 1px solid rgba(255,255,255,0.05);
+  }
+
+  .marquee-track {
+    display: flex;
+    gap: 60px;
+    animation: marquee 20s linear infinite;
+    white-space: nowrap;
+  }
+
+  .marquee-item {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    font-family: 'Playfair Display', serif;
+    font-size: 14px;
+    font-style: italic;
+    color: rgba(255,255,255,0.4);
+    flex-shrink: 0;
+  }
+
+  .marquee-dot {
+    width: 5px;
+    height: 5px;
+    background: var(--accent);
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+
+  @keyframes marquee {
+    from { transform: translateX(0); }
+    to { transform: translateX(-50%); }
+  }
+
+  /* SECTION COMMONS */
+  section {
+    padding: 120px 80px;
+  }
+
+  .section-header {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    margin-bottom: 64px;
+  }
+
+  .section-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 16px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .section-label::before {
+    content: '';
+    width: 32px;
+    height: 1px;
+    background: var(--accent);
+  }
+
+  .section-title {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(36px, 4vw, 52px);
+    font-weight: 700;
+    line-height: 1.1;
+    color: var(--black);
+  }
+
+  .section-title em { font-style: italic; color: var(--accent); }
+
+  .view-all {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--charcoal);
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding-bottom: 4px;
+    border-bottom: 1px solid var(--charcoal);
+    transition: color 0.3s ease, border-color 0.3s ease;
+  }
+
+  .view-all:hover { color: var(--accent); border-color: var(--accent); }
+
+  .view-all svg { width: 16px; height: 16px; transition: transform 0.3s ease; }
+  .view-all:hover svg { transform: translateX(4px); }
+
+  /* PRODUCT GRID */
+  .products-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 2px;
+  }
+
+  .product-card {
+    position: relative;
+    background: var(--cream);
+    overflow: hidden;
+    cursor: none;
+    group: true;
+  }
+
+  .product-card:first-child {
+    grid-column: span 2;
+    grid-row: span 2;
+  }
+
+  .product-img {
+    width: 100%;
+    aspect-ratio: 1;
+    position: relative;
+    overflow: hidden;
+    background: var(--cream);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .product-card:first-child .product-img {
+    aspect-ratio: 1;
+  }
+
+  .product-visual {
+    width: 80%;
+    height: 80%;
+    transition: transform 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  }
+
+  .product-card:hover .product-visual {
+    transform: scale(1.08) rotate(2deg);
+  }
+
+  .product-overlay {
+    position: absolute;
+    inset: 0;
+    background: rgba(13, 13, 13, 0);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background 0.4s ease;
+  }
+
+  .product-card:hover .product-overlay {
+    background: rgba(13, 13, 13, 0.3);
+  }
+
+  .quick-add {
+    padding: 14px 28px;
+    background: var(--warm-white);
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    border: none;
+    cursor: none;
+    opacity: 0;
+    transform: translateY(16px);
+    transition: opacity 0.3s ease, transform 0.3s ease;
+  }
+
+  .product-card:hover .quick-add {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  .product-info {
+    padding: 20px 24px;
+    background: white;
+  }
+
+  .product-category {
+    font-family: 'DM Mono', monospace;
+    font-size: 9px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--mid-gray);
+    margin-bottom: 6px;
+  }
+
+  .product-name {
+    font-family: 'Playfair Display', serif;
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--black);
+    margin-bottom: 8px;
+  }
+
+  .product-card:first-child .product-name { font-size: 22px; }
+
+  .product-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .product-price {
+    font-family: 'DM Mono', monospace;
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--black);
+  }
+
+  .product-original {
+    font-size: 12px;
+    color: var(--mid-gray);
+    text-decoration: line-through;
+    margin-left: 8px;
+  }
+
+  .product-rating {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    color: var(--mid-gray);
+  }
+
+  .star { color: var(--accent); font-size: 12px; }
+
+  .badge {
+    position: absolute;
+    top: 16px;
+    left: 16px;
+    padding: 5px 12px;
+    font-family: 'DM Mono', monospace;
+    font-size: 9px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    z-index: 2;
+  }
+
+  .badge-new { background: var(--black); color: white; }
+  .badge-sale { background: var(--red); color: white; }
+  .badge-hot { background: var(--accent); color: var(--black); }
+
+  .wishlist-btn {
+    position: absolute;
+    top: 16px;
+    right: 16px;
+    width: 36px;
+    height: 36px;
+    background: white;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: none;
+    z-index: 2;
+    transition: transform 0.3s ease, background 0.3s ease;
+    opacity: 0;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  }
+
+  .product-card:hover .wishlist-btn { opacity: 1; }
+  .wishlist-btn:hover { background: var(--accent); transform: scale(1.1); }
+  .wishlist-btn svg { width: 16px; height: 16px; }
+
+  /* CATEGORIES */
+  .categories-section {
+    background: var(--black);
+    padding: 100px 80px;
+    color: white;
+  }
+
+  .categories-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 2px;
+    margin-top: 64px;
+  }
+
+  .category-card {
+    position: relative;
+    overflow: hidden;
+    cursor: none;
+    aspect-ratio: 3/4;
+  }
+
+  .category-bg {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: transform 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  }
+
+  .category-card:hover .category-bg { transform: scale(1.05); }
+
+  .cat-bg-1 { background: linear-gradient(145deg, #1A1A2E 0%, #16213E 50%, #0F3460 100%); }
+  .cat-bg-2 { background: linear-gradient(145deg, #2D1B0E 0%, #4A2C0A 50%, #6B3A12 100%); }
+  .cat-bg-3 { background: linear-gradient(145deg, #0D1117 0%, #1A2B1A 50%, #2D4A2D 100%); }
+
+  .category-overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to top, rgba(0,0,0,0.8) 0%, transparent 60%);
+  }
+
+  .category-content {
+    position: absolute;
+    bottom: 32px;
+    left: 32px;
+    right: 32px;
+  }
+
+  .category-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 8px;
+  }
+
+  .category-name {
+    font-family: 'Playfair Display', serif;
+    font-size: 28px;
+    font-weight: 700;
+    color: white;
+    margin-bottom: 12px;
+  }
+
+  .category-count {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    color: rgba(255,255,255,0.5);
+  }
+
+  .category-arrow {
+    position: absolute;
+    top: 32px;
+    right: 32px;
+    width: 44px;
+    height: 44px;
+    border: 1px solid rgba(255,255,255,0.3);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background 0.3s ease, border-color 0.3s ease, transform 0.3s ease;
+  }
+
+  .category-card:hover .category-arrow {
+    background: var(--accent);
+    border-color: var(--accent);
+    transform: rotate(45deg);
+  }
+
+  .category-arrow svg { width: 18px; height: 18px; stroke: white; fill: none; stroke-width: 1.5; }
+
+  /* FEATURED BAND */
+  .featured-band {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    min-height: 600px;
+    overflow: hidden;
+  }
+
+  .band-visual {
+    background: linear-gradient(135deg, #1A0E05 0%, #3D2010 60%, #5C3015 100%);
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .band-visual-inner {
+    position: relative;
+    z-index: 2;
+    text-align: center;
+  }
+
+  .band-visual::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 600px;
+    height: 600px;
+    background: radial-gradient(circle, rgba(200, 169, 126, 0.2) 0%, transparent 60%);
+    transform: translate(-50%, -50%);
+  }
+
+  .band-content {
+    background: var(--cream);
+    padding: 80px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+
+  .band-meta {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--mid-gray);
+    margin-bottom: 24px;
+  }
+
+  .band-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 48px;
+    font-weight: 900;
+    line-height: 1.05;
+    color: var(--black);
+    margin-bottom: 24px;
+  }
+
+  .band-title em { font-style: italic; color: var(--accent); }
+
+  .band-desc {
+    font-size: 15px;
+    line-height: 1.8;
+    color: var(--mid-gray);
+    max-width: 420px;
+    margin-bottom: 40px;
+  }
+
+  .band-price-row {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin-bottom: 40px;
+  }
+
+  .big-price {
+    font-family: 'Playfair Display', serif;
+    font-size: 40px;
+    font-weight: 700;
+    color: var(--black);
+  }
+
+  .band-original {
+    font-family: 'DM Mono', monospace;
+    font-size: 18px;
+    color: var(--mid-gray);
+    text-decoration: line-through;
+  }
+
+  .band-save {
+    background: var(--red);
+    color: white;
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    padding: 5px 12px;
+  }
+
+  .size-selector {
+    margin-bottom: 40px;
+  }
+
+  .size-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--mid-gray);
+    margin-bottom: 12px;
+  }
+
+  .size-options {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+  }
+
+  .size-btn {
+    width: 44px;
+    height: 44px;
+    border: 1px solid var(--light-gray);
+    background: none;
+    font-family: 'DM Mono', monospace;
+    font-size: 12px;
+    cursor: none;
+    transition: all 0.25s ease;
+    color: var(--charcoal);
+  }
+
+  .size-btn:hover, .size-btn.active {
+    background: var(--black);
+    border-color: var(--black);
+    color: white;
+  }
+
+  .size-btn.sold-out {
+    opacity: 0.3;
+    text-decoration: line-through;
+    cursor: not-allowed;
+  }
+
+  .add-to-cart {
+    padding: 18px 48px;
+    background: var(--black);
+    color: var(--warm-white);
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    border: none;
+    cursor: none;
+    transition: background 0.3s ease, transform 0.3s ease;
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
+    align-self: flex-start;
+  }
+
+  .add-to-cart:hover { background: var(--accent); transform: translateY(-2px); }
+  .add-to-cart svg { width: 18px; height: 18px; }
+
+  /* TESTIMONIALS */
+  .testimonials-section {
+    background: var(--warm-white);
+    padding: 120px 80px;
+    overflow: hidden;
+  }
+
+  .testimonials-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 24px;
+    margin-top: 64px;
+  }
+
+  .testimonial-card {
+    padding: 40px;
+    background: var(--cream);
+    position: relative;
+    transition: transform 0.4s ease, box-shadow 0.4s ease;
+  }
+
+  .testimonial-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 20px 40px rgba(0,0,0,0.08);
+  }
+
+  .testimonial-card:nth-child(2) {
+    background: var(--black);
+    color: white;
+    transform: translateY(-16px);
+  }
+
+  .testimonial-card:nth-child(2):hover {
+    transform: translateY(-20px);
+  }
+
+  .testimonial-quote {
+    font-family: 'Playfair Display', serif;
+    font-size: 72px;
+    line-height: 0.6;
+    color: var(--accent);
+    margin-bottom: 24px;
+    font-weight: 700;
+  }
+
+  .testimonial-card:nth-child(2) .testimonial-quote {
+    color: rgba(200, 169, 126, 0.4);
+  }
+
+  .testimonial-text {
+    font-size: 15px;
+    line-height: 1.8;
+    color: var(--mid-gray);
+    margin-bottom: 32px;
+  }
+
+  .testimonial-card:nth-child(2) .testimonial-text { color: rgba(255,255,255,0.7); }
+
+  .testimonial-author {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+  }
+
+  .author-avatar {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    background: var(--accent-light);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Playfair Display', serif;
+    font-size: 18px;
+    font-weight: 700;
+    color: var(--accent-dark);
+    flex-shrink: 0;
+  }
+
+  .author-name {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--black);
+  }
+
+  .testimonial-card:nth-child(2) .author-name { color: white; }
+
+  .author-handle {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    color: var(--mid-gray);
+  }
+
+  .testimonial-stars {
+    display: flex;
+    gap: 3px;
+    margin-bottom: 20px;
+  }
+
+  /* NEWSLETTER */
+  .newsletter-section {
+    background: var(--black);
+    padding: 100px 80px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 80px;
+    align-items: center;
+  }
+
+  .newsletter-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 48px;
+    font-weight: 900;
+    line-height: 1.05;
+    color: white;
+  }
+
+  .newsletter-title em { font-style: italic; color: var(--accent); }
+
+  .newsletter-desc {
+    font-size: 15px;
+    line-height: 1.7;
+    color: rgba(255,255,255,0.5);
+    margin-top: 16px;
+  }
+
+  .newsletter-form {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  .newsletter-input-row {
+    display: flex;
+    gap: 0;
+  }
+
+  .newsletter-input {
+    flex: 1;
+    padding: 18px 24px;
+    background: rgba(255,255,255,0.07);
+    border: 1px solid rgba(255,255,255,0.12);
+    border-right: none;
+    color: white;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 14px;
+    outline: none;
+    transition: border-color 0.3s ease;
+  }
+
+  .newsletter-input::placeholder { color: rgba(255,255,255,0.3); }
+  .newsletter-input:focus { border-color: var(--accent); }
+
+  .newsletter-btn {
+    padding: 18px 32px;
+    background: var(--accent);
+    color: var(--black);
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    border: none;
+    cursor: none;
+    transition: background 0.3s ease;
+    white-space: nowrap;
+  }
+
+  .newsletter-btn:hover { background: var(--accent-dark); }
+
+  .newsletter-perks {
+    display: flex;
+    gap: 32px;
+    margin-top: 8px;
+  }
+
+  .perk {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.4);
+  }
+
+  .perk-dot {
+    width: 6px;
+    height: 6px;
+    background: var(--accent);
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+
+  /* BRANDS */
+  .brands-section {
+    padding: 60px 80px;
+    background: var(--cream);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 40px;
+  }
+
+  .brands-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--mid-gray);
+    text-align: center;
+  }
+
+  .brands-row {
+    display: flex;
+    gap: 60px;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+
+  .brand-logo {
+    font-family: 'Playfair Display', serif;
+    font-size: 20px;
+    font-weight: 700;
+    color: var(--light-gray);
+    letter-spacing: 0.1em;
+    transition: color 0.3s ease;
+    cursor: none;
+  }
+
+  .brand-logo:hover { color: var(--black); }
+
+  /* FOOTER */
+  footer {
+    background: var(--charcoal);
+    padding: 80px 80px 40px;
+    color: rgba(255,255,255,0.6);
+  }
+
+  .footer-grid {
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr 1fr;
+    gap: 60px;
+    margin-bottom: 60px;
+  }
+
+  .footer-brand {
+    font-family: 'Playfair Display', serif;
+    font-size: 28px;
+    font-weight: 700;
+    color: white;
+    margin-bottom: 16px;
+  }
+
+  .footer-brand span { color: var(--accent); }
+
+  .footer-tagline {
+    font-size: 14px;
+    line-height: 1.7;
+    color: rgba(255,255,255,0.4);
+    margin-bottom: 32px;
+    max-width: 280px;
+  }
+
+  .social-links {
+    display: flex;
+    gap: 12px;
+  }
+
+  .social-btn {
+    width: 40px;
+    height: 40px;
+    border: 1px solid rgba(255,255,255,0.15);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: none;
+    transition: border-color 0.3s ease, background 0.3s ease;
+  }
+
+  .social-btn:hover {
+    border-color: var(--accent);
+    background: rgba(200, 169, 126, 0.1);
+  }
+
+  .social-btn svg { width: 16px; height: 16px; stroke: rgba(255,255,255,0.6); fill: none; stroke-width: 1.5; }
+
+  .footer-heading {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: white;
+    margin-bottom: 24px;
+  }
+
+  .footer-links {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .footer-links a {
+    font-size: 13px;
+    color: rgba(255,255,255,0.4);
+    text-decoration: none;
+    transition: color 0.3s ease;
+  }
+
+  .footer-links a:hover { color: var(--accent); }
+
+  .footer-bottom {
+    border-top: 1px solid rgba(255,255,255,0.06);
+    padding-top: 40px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .footer-copy {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.1em;
+    color: rgba(255,255,255,0.25);
+  }
+
+  .footer-legal {
+    display: flex;
+    gap: 32px;
+  }
+
+  .footer-legal a {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.1em;
+    color: rgba(255,255,255,0.25);
+    text-decoration: none;
+    transition: color 0.3s ease;
+  }
+
+  .footer-legal a:hover { color: var(--accent); }
+
+  /* ANIMATIONS */
+  @keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+
+  @keyframes fadeInLeft {
+    from { opacity: 0; transform: translateX(-30px); }
+    to { opacity: 1; transform: translateX(0); }
+  }
+
+  @keyframes fadeInUp {
+    from { opacity: 0; transform: translateY(30px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .reveal {
+    opacity: 0;
+    transform: translateY(40px);
+    transition: opacity 0.8s ease, transform 0.8s ease;
+  }
+
+  .reveal.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  /* Noise Overlay */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='1'/%3E%3C/svg%3E");
+    opacity: 0.025;
+    pointer-events: none;
+    z-index: 9997;
+  }
+</style>
+</head>
+<body>
+
+<div class="cursor" id="cursor"></div>
+<div class="cursor-ring" id="cursorRing"></div>
+
+<!-- NAV -->
+<nav id="navbar">
+  <a href="#" class="nav-logo">SOLE <span>STUDIO</span></a>
+  <ul class="nav-links">
+    <li><a href="#">New Arrivals</a></li>
+    <li><a href="#">Men</a></li>
+    <li><a href="#">Women</a></li>
+    <li><a href="#">Collections</a></li>
+    <li><a href="#">About</a></li>
+  </ul>
+  <div class="nav-actions">
+    <div class="nav-cart">
+      <svg viewBox="0 0 24 24"><path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 01-8 0"/></svg>
+      <span class="cart-badge">3</span>
+    </div>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-left">
+    <p class="hero-tag">SS 2026 Collection</p>
+    <h1 class="hero-title">Walk in<br><em>Pure</em><br>Elegance.</h1>
+    <p class="hero-subtitle">Handcrafted for those who demand perfection. Each pair tells a story of refined artisanship and modern sensibility.</p>
+    <div class="hero-buttons">
+      <a href="#" class="btn-primary">Shop Collection</a>
+      <a href="#" class="btn-outline">Lookbook</a>
+    </div>
+    <div class="hero-stats">
+      <div class="stat-item">
+        <div class="stat-num">4.8K+</div>
+        <div class="stat-label">Happy Customers</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-num">120+</div>
+        <div class="stat-label">Unique Styles</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-num">15</div>
+        <div class="stat-label">Premium Brands</div>
+      </div>
+    </div>
+  </div>
+  <div class="hero-right">
+    <div class="hero-image-container">
+      <div class="hero-shoe-visual">
+        <div class="shoe-mockup">
+          <!-- Shoe SVG Illustration -->
+          <div class="shoe-svg-wrap">
+            <svg viewBox="0 0 480 320" xmlns="http://www.w3.org/2000/svg" width="90%">
+              <!-- Shadow -->
+              <ellipse cx="240" cy="305" rx="150" ry="12" fill="rgba(0,0,0,0.12)"/>
+              <!-- Sole -->
+              <path d="M80 250 Q90 270 160 278 Q240 285 340 278 Q400 272 420 258 Q440 245 380 238 Q300 232 200 235 Q120 238 80 250Z" fill="#2C2C2C"/>
+              <!-- Midsole accent -->
+              <path d="M85 248 Q95 256 165 262 Q245 268 340 262 Q398 257 415 248 Q380 244 280 242 Q170 240 85 248Z" fill="#C8A97E"/>
+              <!-- Upper Body -->
+              <path d="M100 240 Q95 220 110 195 Q125 170 160 158 Q200 145 250 142 Q310 140 350 148 Q390 156 410 175 Q420 190 415 215 Q405 235 380 242 Q300 250 200 248 Q140 246 100 240Z" fill="#F5F0E8"/>
+              <!-- Shoe toe detail lines -->
+              <path d="M110 195 Q150 178 200 172 Q250 168 300 170 Q340 172 370 180" stroke="#DDD5C5" stroke-width="1.5" fill="none"/>
+              <!-- Upper pattern/texture -->
+              <path d="M145 165 L155 155 L200 148 L260 145 L310 147 L350 152 L370 160" stroke="#E0D8CA" stroke-width="1" fill="none"/>
+              <!-- Laces area -->
+              <path d="M160 162 Q185 155 215 153 Q245 151 270 152 Q300 154 320 160" stroke="#C0B8A8" stroke-width="8" stroke-linecap="round" fill="none" opacity="0.5"/>
+              <!-- Lace detail -->
+              <path d="M165 162 L185 155 M185 155 L205 160 M205 160 L225 153 M225 153 L245 158 M245 158 L265 152 M265 152 L285 157 M285 157 L310 160" stroke="#B0A898" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+              <!-- Side swoosh/brand mark -->
+              <path d="M120 220 Q180 200 260 198 Q320 197 370 210" stroke="#C8A97E" stroke-width="3" fill="none" stroke-linecap="round" opacity="0.8"/>
+              <!-- Heel counter -->
+              <path d="M380 185 Q410 195 415 218 Q405 238 380 244 Q400 230 405 215 Q405 198 380 185Z" fill="#E8E0D0"/>
+              <!-- Stitching detail on heel -->
+              <path d="M385 190 Q412 200 415 220 Q408 237 383 243" stroke="#D0C8B8" stroke-width="1" stroke-dasharray="3 2" fill="none"/>
+              <!-- Eyelet dots -->
+              <circle cx="175" cy="163" r="3" fill="#B0A898"/>
+              <circle cx="197" cy="157" r="3" fill="#B0A898"/>
+              <circle cx="220" cy="154" r="3" fill="#B0A898"/>
+              <circle cx="243" cy="153" r="3" fill="#B0A898"/>
+              <circle cx="266" cy="154" r="3" fill="#B0A898"/>
+              <circle cx="288" cy="158" r="3" fill="#B0A898"/>
+              <circle cx="310" cy="163" r="3" fill="#B0A898"/>
+              <!-- Tongue -->
+              <path d="M205 148 Q220 135 235 130 Q250 127 265 130 Q278 135 282 148" fill="#EDE5D5"/>
+              <path d="M235 130 L235 148 M245 128 L245 148 M255 129 L255 148" stroke="#D8D0C0" stroke-width="1" fill="none"/>
+            </svg>
+          </div>
+          <div class="shoe-label">
+            <div>
+              <div class="shoe-name">Artisan Pro</div>
+            </div>
+            <div class="shoe-price-hero">$289</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="hero-right-info">
+      <span class="new-arrival-tag">✦ Just Arrived</span>
+      <div class="color-dots">
+        <div class="color-dot active" style="background:#F5F0E8; border-color: #555;"></div>
+        <div class="color-dot" style="background:#2C2C2C;"></div>
+        <div class="color-dot" style="background:#C8A97E;"></div>
+        <div class="color-dot" style="background:#8B5E3C;"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- MARQUEE -->
+<div class="marquee-section">
+  <div class="marquee-track">
+    <div class="marquee-item"><span class="marquee-dot"></span>Free shipping over $200</div>
+    <div class="marquee-item"><span class="marquee-dot"></span>Handcrafted premium leather</div>
+    <div class="marquee-item"><span class="marquee-dot"></span>30-day easy returns</div>
+    <div class="marquee-item"><span class="marquee-dot"></span>SS 2026 collection now live</div>
+    <div class="marquee-item"><span class="marquee-dot"></span>Sustainably crafted materials</div>
+    <div class="marquee-item"><span class="marquee-dot"></span>Free shipping over $200</div>
+    <div class="marquee-item"><span class="marquee-dot"></span>Handcrafted premium leather</div>
+    <div class="marquee-item"><span class="marquee-dot"></span>30-day easy returns</div>
+    <div class="marquee-item"><span class="marquee-dot"></span>SS 2026 collection now live</div>
+    <div class="marquee-item"><span class="marquee-dot"></span>Sustainably crafted materials</div>
+    <div class="marquee-item"><span class="marquare-dot"></span>Free shipping over $200</div>
+    <div class="marquee-item"><span class="marquee-dot"></span>Handcrafted premium leather</div>
+  </div>
+</div>
+
+<!-- PRODUCTS -->
+<section id="products" style="padding: 100px 60px;">
+  <div class="section-header reveal">
+    <div>
+      <div class="section-label">Featured</div>
+      <h2 class="section-title">Best<br><em>Sellers</em></h2>
+    </div>
+    <a href="#" class="view-all">
+      View All Products
+      <svg viewBox="0 0 24 24" stroke="currentColor" fill="none" stroke-width="1.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+    </a>
+  </div>
+
+  <div class="products-grid reveal">
+    <!-- Featured Large Card -->
+    <div class="product-card">
+      <span class="badge badge-hot">✦ Hot</span>
+      <button class="wishlist-btn">
+        <svg viewBox="0 0 24 24" stroke="#333" fill="none" stroke-width="1.5"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/></svg>
+      </button>
+      <div class="product-img">
+        <svg class="product-visual" viewBox="0 0 400 280" xmlns="http://www.w3.org/2000/svg">
+          <ellipse cx="200" cy="265" rx="130" ry="10" fill="rgba(0,0,0,0.1)"/>
+          <path d="M60 210 Q55 188 70 165 Q88 140 128 128 Q172 115 215 112 Q268 110 306 120 Q344 130 360 150 Q375 168 370 192 Q360 212 332 218 Q255 228 160 226 Q98 224 60 210Z" fill="#0D0D0D"/>
+          <path d="M62 207 Q80 218 160 222 Q258 228 335 218 Q365 210 368 192 Q372 175 358 158 Q342 140 306 130 Q265 120 215 122 Q165 124 128 138 Q92 152 70 175 Q58 192 62 207Z" fill="#1A1A1A"/>
+          <path d="M70 175 Q100 156 145 148 Q195 140 245 142 Q290 144 325 158" stroke="#333" stroke-width="1.5" fill="none"/>
+          <path d="M95 185 Q160 168 230 166 Q290 165 340 178" stroke="#C8A97E" stroke-width="3.5" fill="none" stroke-linecap="round" opacity="0.9"/>
+          <path d="M155 132 L165 120 L210 114 L268 112 L308 117 L335 126" stroke="#2A2A2A" stroke-width="1" fill="none"/>
+          <path d="M155 132 Q178 122 208 118 Q238 115 265 116 Q295 118 315 126" stroke="#444" stroke-width="8" fill="none" opacity="0.5" stroke-linecap="round"/>
+          <path d="M165 130 L180 122 M180 122 L198 127 M198 127 L215 119 M215 119 L232 124 M232 124 L250 117 M250 117 L268 122 M268 122 L290 126" stroke="#555" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+          <path d="M335 150 Q362 162 368 186 Q358 210 334 216 Q356 202 360 185 Q358 165 335 150Z" fill="#252525"/>
+          <path d="M205 110 Q220 96 234 91 Q248 88 260 92 Q272 97 274 110" fill="#222"/>
+        </svg>
+        <div class="product-overlay">
+          <button class="quick-add">Quick Add</button>
+        </div>
+      </div>
+      <div class="product-info">
+        <div class="product-category">Men's Lifestyle</div>
+        <div class="product-name">Midnight Runner Elite</div>
+        <div class="product-footer">
+          <div>
+            <span class="product-price">$345</span>
+            <span class="product-original">$420</span>
+          </div>
+          <div class="product-rating">
+            <span class="star">★</span> 4.9 (214)
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Card 2 -->
+    <div class="product-card">
+      <span class="badge badge-new">New</span>
+      <button class="wishlist-btn">
+        <svg viewBox="0 0 24 24" stroke="#333" fill="none" stroke-width="1.5"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/></svg>
+      </button>
+      <div class="product-img">
+        <svg class="product-visual" viewBox="0 0 320 220" xmlns="http://www.w3.org/2000/svg">
+          <ellipse cx="160" cy="210" rx="110" ry="8" fill="rgba(0,0,0,0.08)"/>
+          <path d="M45 172 Q42 155 55 136 Q70 116 105 106 Q140 96 175 94 Q215 92 248 100 Q278 108 292 124 Q304 138 300 158 Q292 174 268 179 Q205 187 130 186 Q80 184 45 172Z" fill="#8B5E3C"/>
+          <path d="M48 170 Q68 180 132 183 Q208 187 270 179 Q296 172 298 156 Q302 140 290 126 Q276 110 246 104 Q212 97 175 100 Q140 103 105 115 Q72 127 56 148 Q44 162 48 170Z" fill="#A0714A"/>
+          <path d="M56 148 Q90 130 140 122 Q185 115 230 118 Q265 122 285 133" stroke="#C8A97E" stroke-width="4" fill="none" stroke-linecap="round" opacity="0.7"/>
+          <path d="M80 148 Q148 132 200 130 Q250 130 288 142" stroke="#F5F0E8" stroke-width="2.5" fill="none" stroke-linecap="round" opacity="0.4"/>
+          <path d="M115 107 Q140 98 174 95 Q208 93 238 98 Q264 103 280 112" stroke="#8B5E3C" stroke-width="1.5" fill="none"/>
+          <path d="M165 92 Q178 80 192 76 Q205 73 215 77 Q225 82 226 93" fill="#7A5035"/>
+          <path d="M270 116 Q296 126 299 150 Q292 172 270 178 Q290 164 294 148 Q291 130 270 116Z" fill="#C4935A"/>
+        </svg>
+        <div class="product-overlay">
+          <button class="quick-add">Quick Add</button>
+        </div>
+      </div>
+      <div class="product-info">
+        <div class="product-category">Women's Casual</div>
+        <div class="product-name">Amber Drift Low</div>
+        <div class="product-footer">
+          <span class="product-price">$218</span>
+          <div class="product-rating"><span class="star">★</span> 4.7 (98)</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Card 3 -->
+    <div class="product-card">
+      <span class="badge badge-sale">−30%</span>
+      <button class="wishlist-btn">
+        <svg viewBox="0 0 24 24" stroke="#333" fill="none" stroke-width="1.5"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/></svg>
+      </button>
+      <div class="product-img" style="background: #EBF0F0;">
+        <svg class="product-visual" viewBox="0 0 320 220" xmlns="http://www.w3.org/2000/svg">
+          <ellipse cx="160" cy="210" rx="110" ry="8" fill="rgba(0,0,0,0.07)"/>
+          <path d="M45 172 Q42 155 55 136 Q70 116 105 106 Q140 96 175 94 Q215 92 248 100 Q278 108 292 124 Q304 138 300 158 Q292 174 268 179 Q205 187 130 186 Q80 184 45 172Z" fill="#2C3E50"/>
+          <path d="M48 170 Q68 180 132 183 Q208 187 270 179 Q296 172 298 156 Q302 140 290 126 Q276 110 246 104 Q212 97 175 100 Q140 103 105 115 Q72 127 56 148 Q44 162 48 170Z" fill="#34495E"/>
+          <path d="M56 148 Q90 130 140 122 Q185 115 230 118 Q265 122 285 133" stroke="#5DADE2" stroke-width="4" fill="none" stroke-linecap="round" opacity="0.8"/>
+          <path d="M80 148 Q148 132 200 130 Q250 130 288 142" stroke="white" stroke-width="2.5" fill="none" stroke-linecap="round" opacity="0.35"/>
+          <path d="M115 107 Q140 98 174 95 Q208 93 238 98 Q264 103 280 112" stroke="#2C3E50" stroke-width="1.5" fill="none"/>
+          <path d="M165 92 Q178 80 192 76 Q205 73 215 77 Q225 82 226 93" fill="#2C3E50"/>
+          <path d="M270 116 Q296 126 299 150 Q292 172 270 178 Q290 164 294 148 Q291 130 270 116Z" fill="#4A6FA5"/>
+          <path d="M160 172 Q200 160 240 162 Q265 163 285 170" stroke="#5DADE2" stroke-width="2" fill="none" opacity="0.5"/>
+        </svg>
+        <div class="product-overlay">
+          <button class="quick-add">Quick Add</button>
+        </div>
+      </div>
+      <div class="product-info">
+        <div class="product-category">Men's Sport</div>
+        <div class="product-name">Coast Guard Retro</div>
+        <div class="product-footer">
+          <div>
+            <span class="product-price">$161</span>
+            <span class="product-original">$230</span>
+          </div>
+          <div class="product-rating"><span class="star">★</span> 4.6 (156)</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Card 4 -->
+    <div class="product-card">
+      <button class="wishlist-btn">
+        <svg viewBox="0 0 24 24" stroke="#333" fill="none" stroke-width="1.5"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/></svg>
+      </button>
+      <div class="product-img" style="background: #F8EEF0;">
+        <svg class="product-visual" viewBox="0 0 320 220" xmlns="http://www.w3.org/2000/svg">
+          <ellipse cx="160" cy="210" rx="110" ry="8" fill="rgba(0,0,0,0.07)"/>
+          <path d="M45 172 Q42 155 55 136 Q70 116 105 106 Q140 96 175 94 Q215 92 248 100 Q278 108 292 124 Q304 138 300 158 Q292 174 268 179 Q205 187 130 186 Q80 184 45 172Z" fill="#C0392B"/>
+          <path d="M48 170 Q68 180 132 183 Q208 187 270 179 Q296 172 298 156 Q302 140 290 126 Q276 110 246 104 Q212 97 175 100 Q140 103 105 115 Q72 127 56 148 Q44 162 48 170Z" fill="#E74C3C"/>
+          <path d="M56 148 Q90 130 140 122 Q185 115 230 118 Q265 122 285 133" stroke="white" stroke-width="4" fill="none" stroke-linecap="round" opacity="0.7"/>
+          <path d="M80 148 Q148 132 200 130 Q250 130 288 142" stroke="#FF6B6B" stroke-width="2.5" fill="none" stroke-linecap="round" opacity="0.5"/>
+          <path d="M115 107 Q140 98 174 95 Q208 93 238 98 Q264 103 280 112" stroke="#C0392B" stroke-width="1.5" fill="none"/>
+          <path d="M165 92 Q178 80 192 76 Q205 73 215 77 Q225 82 226 93" fill="#C0392B"/>
+          <path d="M270 116 Q296 126 299 150 Q292 172 270 178 Q290 164 294 148 Q291 130 270 116Z" fill="#FF6B6B"/>
+          <circle cx="185" cy="110" r="12" fill="white" opacity="0.15"/>
+          <circle cx="185" cy="110" r="7" fill="white" opacity="0.2"/>
+        </svg>
+        <div class="product-overlay">
+          <button class="quick-add">Quick Add</button>
+        </div>
+      </div>
+      <div class="product-info">
+        <div class="product-category">Unisex Sport</div>
+        <div class="product-name">Flame Burst '95</div>
+        <div class="product-footer">
+          <span class="product-price">$195</span>
+          <div class="product-rating"><span class="star">★</span> 4.8 (312)</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CATEGORIES -->
+<div class="categories-section">
+  <div class="section-header reveal">
+    <div>
+      <div class="section-label" style="color: rgba(200,169,126,0.8);">
+        <span style="background: var(--accent); display: inline-block; width:32px; height:1px; vertical-align: middle; margin-right: 12px;"></span>
+        Browse By
+      </div>
+      <h2 class="section-title" style="color: white;">Shop by<br><em>Category</em></h2>
+    </div>
+  </div>
+  <div class="categories-grid reveal">
+    <div class="category-card">
+      <div class="category-bg cat-bg-1">
+        <svg viewBox="0 0 400 480" xmlns="http://www.w3.org/2000/svg" width="75%">
+          <ellipse cx="200" cy="445" rx="140" ry="12" fill="rgba(0,0,0,0.25)"/>
+          <!-- Formal Oxford shoe -->
+          <path d="M55 360 Q52 335 68 308 Q86 278 130 264 Q180 248 225 245 Q278 242 318 255 Q356 268 374 293 Q390 316 385 345 Q373 370 342 378 Q270 390 178 388 Q108 386 55 360Z" fill="#1a0a02"/>
+          <path d="M58 357 Q80 372 180 383 Q272 392 344 378 Q376 368 383 345 Q388 322 373 298 Q356 274 316 262 Q278 252 225 255 Q178 258 130 272 Q90 286 70 315 Q55 338 58 357Z" fill="#2D1508"/>
+          <path d="M70 315 Q110 295 165 286 Q215 278 265 282 Q308 287 338 300" stroke="#3D2010" stroke-width="2" fill="none"/>
+          <!-- Brogue dots -->
+          <path d="M95 310 Q130 295 175 288 Q220 282 265 285 Q298 289 320 298" stroke="#4A2C12" stroke-width="5" fill="none" stroke-dasharray="3 5"/>
+          <path d="M85 340 Q140 320 200 318 Q255 316 300 328" stroke="#6B3A18" stroke-width="4" fill="none" stroke-linecap="round" opacity="0.7"/>
+          <!-- Oxford cap toe -->
+          <path d="M66 335 Q80 308 120 295 Q168 280 200 278 Q200 295 175 308 Q145 318 110 325 Q85 330 66 335Z" fill="#1E0C04" stroke="#3A2010" stroke-width="1.5"/>
+          <path d="M68 333 Q82 308 120 296 Q162 282 198 280" stroke="#4A2C12" stroke-width="1.5" stroke-dasharray="3 4" fill="none"/>
+          <path d="M350 280 Q378 295 382 328 Q374 366 345 375 Q366 358 370 332 Q367 305 350 280Z" fill="#3D1E0A"/>
+          <!-- Heel detail -->
+          <rect x="330" y="375" width="60" height="20" rx="2" fill="#1a0a02"/>
+          <rect x="333" y="375" width="54" height="10" rx="1" fill="#2D1508"/>
+        </svg>
+      </div>
+      <div class="category-overlay"></div>
+      <div class="category-content">
+        <div class="category-label">Collection</div>
+        <div class="category-name">Formal & Oxford</div>
+        <div class="category-count">47 products</div>
+      </div>
+      <div class="category-arrow">
+        <svg viewBox="0 0 24 24"><path d="M7 17L17 7M17 7H7M17 7v10"/></svg>
+      </div>
+    </div>
+
+    <div class="category-card">
+      <div class="category-bg cat-bg-2">
+        <svg viewBox="0 0 400 480" xmlns="http://www.w3.org/2000/svg" width="75%">
+          <ellipse cx="200" cy="445" rx="140" ry="12" fill="rgba(0,0,0,0.2)"/>
+          <!-- Casual sneaker -->
+          <path d="M55 355 Q50 330 65 305 Q82 276 126 262 Q174 246 220 243 Q272 240 314 252 Q354 266 372 290 Q388 312 383 342 Q372 368 340 376 Q268 388 175 386 Q105 384 55 355Z" fill="#4A3525"/>
+          <path d="M58 352 Q78 366 176 380 Q270 390 342 376 Q374 365 381 342 Q386 318 372 296 Q354 272 314 260 Q274 250 220 253 Q175 256 127 270 Q87 284 67 311 Q53 332 58 352Z" fill="#6B4C35"/>
+          <!-- Sole stripe -->
+          <path d="M55 355 Q80 368 176 375 Q268 382 340 370 Q360 362 370 350" stroke="#C8A97E" stroke-width="6" fill="none" stroke-linecap="round" opacity="0.9"/>
+          <path d="M58 345 Q85 356 180 362 Q270 368 338 355" stroke="#8B6B4A" stroke-width="3" fill="none"/>
+          <!-- Upper details -->
+          <path d="M68 308 Q105 288 155 280 Q205 272 255 275 Q295 278 325 292" stroke="#805038" stroke-width="1.5" fill="none"/>
+          <path d="M90 288 Q135 272 185 266 Q235 260 275 265 Q308 270 330 282" stroke="#7A4C30" stroke-width="8" fill="none" opacity="0.4" stroke-linecap="round"/>
+          <path d="M100 288 L118 278 M118 278 L138 284 M138 284 L156 274 M156 274 L174 280 M174 280 L192 270 M192 270 L210 276 M210 276 L228 268 M228 268 L245 274 M245 274 L262 268" stroke="#9A6040" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+          <path d="M340 270 Q370 284 375 318 Q367 360 342 370 Q362 354 366 325 Q364 296 340 270Z" fill="#805038"/>
+          <!-- Cushion sole -->
+          <path d="M55 368 Q200 386 380 368" stroke="#A07850" stroke-width="3" fill="none" opacity="0.5"/>
+        </svg>
+      </div>
+      <div class="category-overlay"></div>
+      <div class="category-content">
+        <div class="category-label">Collection</div>
+        <div class="category-name">Casual & Lifestyle</div>
+        <div class="category-count">89 products</div>
+      </div>
+      <div class="category-arrow">
+        <svg viewBox="0 0 24 24"><path d="M7 17L17 7M17 7H7M17 7v10"/></svg>
+      </div>
+    </div>
+
+    <div class="category-card">
+      <div class="category-bg cat-bg-3">
+        <svg viewBox="0 0 400 480" xmlns="http://www.w3.org/2000/svg" width="75%">
+          <ellipse cx="200" cy="445" rx="140" ry="12" fill="rgba(0,0,0,0.2)"/>
+          <!-- Running shoe -->
+          <path d="M50 355 Q46 328 62 300 Q80 270 126 255 Q176 238 222 235 Q276 232 318 245 Q358 258 376 284 Q394 308 389 340 Q378 368 346 376 Q272 388 175 386 Q100 384 50 355Z" fill="#1B3A2D"/>
+          <path d="M53 352 Q75 366 177 380 Q274 392 348 376 Q380 364 387 340 Q392 314 376 290 Q358 264 316 252 Q276 242 222 245 Q176 248 126 263 Q84 278 64 306 Q50 328 53 352Z" fill="#2D5940"/>
+          <!-- Aggressive sole -->
+          <path d="M50 358 Q75 372 178 380 Q275 388 347 373 Q370 365 378 350" stroke="#5BAA70" stroke-width="7" fill="none" stroke-linecap="round" opacity="0.9"/>
+          <path d="M52 348 Q80 358 178 366 Q272 372 342 358" stroke="#3D7A55" stroke-width="3" fill="none"/>
+          <path d="M54 340 Q85 350 180 356 Q270 360 340 348" stroke="#4A8A62" stroke-width="2" fill="none" opacity="0.5"/>
+          <!-- Dynamic lines -->
+          <path d="M65 302 Q105 282 160 272 Q210 262 262 266 Q302 270 332 284" stroke="#3D7A55" stroke-width="1.5" fill="none"/>
+          <path d="M90 284 Q160 262 230 260 Q285 260 320 272" stroke="#5BAA70" stroke-width="3.5" fill="none" stroke-linecap="round" opacity="0.8"/>
+          <!-- Ventilation holes -->
+          <ellipse cx="140" cy="285" rx="6" ry="9" fill="#1B3A2D" opacity="0.6"/>
+          <ellipse cx="170" cy="278" rx="6" ry="9" fill="#1B3A2D" opacity="0.6"/>
+          <ellipse cx="200" cy="273" rx="6" ry="9" fill="#1B3A2D" opacity="0.6"/>
+          <ellipse cx="230" cy="273" rx="6" ry="9" fill="#1B3A2D" opacity="0.6"/>
+          <ellipse cx="260" cy="277" rx="6" ry="9" fill="#1B3A2D" opacity="0.6"/>
+          <path d="M345 265 Q376 282 382 316 Q373 360 347 372 Q368 354 372 324 Q369 295 345 265Z" fill="#3A6050"/>
+          <!-- Tongue logo -->
+          <path d="M196 240 Q210 226 223 222 Q236 218 246 224 Q254 230 253 242" fill="#245040"/>
+          <circle cx="225" cy="232" r="8" fill="#5BAA70" opacity="0.5"/>
+          <circle cx="225" cy="232" r="5" fill="#7ACC88" opacity="0.5"/>
+        </svg>
+      </div>
+      <div class="category-overlay"></div>
+      <div class="category-content">
+        <div class="category-label">Collection</div>
+        <div class="category-name">Sport & Running</div>
+        <div class="category-count">63 products</div>
+      </div>
+      <div class="category-arrow">
+        <svg viewBox="0 0 24 24"><path d="M7 17L17 7M17 7H7M17 7v10"/></svg>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- FEATURED PRODUCT BAND -->
+<div class="featured-band">
+  <div class="band-visual">
+    <div class="band-visual-inner">
+      <svg viewBox="0 0 520 380" xmlns="http://www.w3.org/2000/svg" width="92%">
+        <defs>
+          <radialGradient id="glow" cx="50%" cy="50%" r="50%">
+            <stop offset="0%" stop-color="#C8A97E" stop-opacity="0.3"/>
+            <stop offset="100%" stop-color="transparent"/>
+          </radialGradient>
+        </defs>
+        <ellipse cx="260" cy="350" rx="200" ry="18" fill="rgba(200,169,126,0.15)"/>
+        <circle cx="260" cy="200" r="220" fill="url(#glow)"/>
+        <!-- Premium leather boot -->
+        <path d="M70 310 Q65 280 80 250 Q98 215 145 195 Q195 173 240 168 Q295 162 340 174 Q384 187 404 212 Q424 237 418 270 Q408 298 375 308 Q296 325 190 322 Q118 320 70 310Z" fill="#3D2010"/>
+        <path d="M73 307 Q95 322 192 318 Q298 325 377 307 Q412 296 417 268 Q422 242 402 218 Q382 194 338 182 Q294 170 240 176 Q193 181 145 200 Q100 218 82 250 Q68 278 73 307Z" fill="#5C3015"/>
+        <!-- Boot shaft -->
+        <path d="M240 175 Q240 140 245 108 Q250 76 258 55 Q265 35 270 30 Q275 35 278 55 Q284 78 286 112 Q288 145 284 175" fill="#5C3015" stroke="#4A2810" stroke-width="2"/>
+        <path d="M250 110 L280 110 Q282 130 284 160 L240 160 Q240 130 250 110Z" fill="#6B3A18"/>
+        <!-- Brogueing on boot -->
+        <path d="M80 250 Q120 228 175 218 Q228 208 278 210 Q322 212 355 226" stroke="#7A4020" stroke-width="2" fill="none"/>
+        <path d="M90 268 Q135 248 190 242 Q240 236 285 240 Q322 244 348 256" stroke="#C8A97E" stroke-width="4.5" fill="none" stroke-linecap="round" opacity="0.8"/>
+        <path d="M88 286 Q135 268 192 264 Q242 260 286 264 Q320 268 345 280" stroke="#A07850" stroke-width="2.5" fill="none" opacity="0.6"/>
+        <!-- Boot sole -->
+        <path d="M70 314 Q95 328 195 332 Q298 336 376 320 Q400 312 408 298" stroke="#8B6B4A" stroke-width="5" fill="none" opacity="0.7"/>
+        <path d="M68 320 Q200 342 380 322" stroke="#7A5A38" stroke-width="8" fill="none" opacity="0.5"/>
+        <!-- Heel detail -->
+        <path d="M375 308 Q414 295 418 270 Q408 298 375 308Z" fill="#4A2810"/>
+        <rect x="350" y="322" width="68" height="22" rx="3" fill="#2D1508"/>
+        <rect x="353" y="322" width="62" height="12" rx="2" fill="#3D2010"/>
+        <!-- Lace detail -->
+        <path d="M175 198 Q195 190 218 186 Q242 183 263 185 Q285 188 302 196" stroke="#8B5E3C" stroke-width="7" fill="none" opacity="0.45" stroke-linecap="round"/>
+        <path d="M180 197 L200 188 M200 188 L220 194 M220 194 L240 186 M240 186 L260 192 M260 192 L282 196" stroke="#A07850" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+        <circle cx="183" cy="197" r="3.5" fill="#C8A97E"/>
+        <circle cx="203" cy="188" r="3.5" fill="#C8A97E"/>
+        <circle cx="222" cy="194" r="3.5" fill="#C8A97E"/>
+        <circle cx="241" cy="186" r="3.5" fill="#C8A97E"/>
+        <circle cx="261" cy="192" r="3.5" fill="#C8A97E"/>
+        <circle cx="282" cy="196" r="3.5" fill="#C8A97E"/>
+      </svg>
+    </div>
+  </div>
+  <div class="band-content">
+    <div class="band-meta">Editor's Pick · Limited Edition</div>
+    <h2 class="band-title">The Heritage<br><em>Boot</em><br>Collection</h2>
+    <p class="band-desc">Full-grain vegetable-tanned leather, hand-stitched Goodyear welt construction. A lifetime investment for those who appreciate the finer things.</p>
+    <div class="band-price-row">
+      <span class="big-price">$459</span>
+      <span class="band-original">$580</span>
+      <span class="band-save">Save 21%</span>
+    </div>
+    <div class="size-selector">
+      <div class="size-label">Select Size (US)</div>
+      <div class="size-options">
+        <button class="size-btn">6</button>
+        <button class="size-btn">7</button>
+        <button class="size-btn sold-out">7.5</button>
+        <button class="size-btn active">8</button>
+        <button class="size-btn">8.5</button>
+        <button class="size-btn">9</button>
+        <button class="size-btn sold-out">9.5</button>
+        <button class="size-btn">10</button>
+        <button class="size-btn">11</button>
+        <button class="size-btn">12</button>
+      </div>
+    </div>
+    <button class="add-to-cart">
+      <svg viewBox="0 0 24 24" stroke="currentColor" fill="none" stroke-width="1.5"><path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 01-8 0"/></svg>
+      Add to Cart
+    </button>
+  </div>
+</div>
+
+<!-- TESTIMONIALS -->
+<div class="testimonials-section">
+  <div class="section-header reveal">
+    <div>
+      <div class="section-label">Reviews</div>
+      <h2 class="section-title">What Our<br><em>Customers</em> Say</h2>
+    </div>
+  </div>
+  <div class="testimonials-grid reveal">
+    <div class="testimonial-card">
+      <div class="testimonial-stars">
+        <span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span>
+      </div>
+      <div class="testimonial-quote">"</div>
+      <p class="testimonial-text">These are without a doubt the finest shoes I've ever worn. The leather quality is exceptional — supple, rich, and clearly built to last decades. I get compliments everywhere.</p>
+      <div class="testimonial-author">
+        <div class="author-avatar">J</div>
+        <div>
+          <div class="author-name">James Reyes</div>
+          <div class="author-handle">Heritage Boot owner</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="testimonial-card">
+      <div class="testimonial-stars">
+        <span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span>
+      </div>
+      <div class="testimonial-quote">"</div>
+      <p class="testimonial-text" style="color: rgba(255,255,255,0.7);">Sole Studio changed how I think about footwear. I used to buy cheap. Now I invest in quality — and these shoes prove why. Worth every single cent.</p>
+      <div class="testimonial-author">
+        <div class="author-avatar" style="background: rgba(200,169,126,0.2); color: var(--accent-light);">M</div>
+        <div>
+          <div class="author-name">Maya Chen</div>
+          <div class="author-handle" style="color: rgba(255,255,255,0.4);">Amber Drift owner</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="testimonial-card">
+      <div class="testimonial-stars">
+        <span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span>
+      </div>
+      <div class="testimonial-quote">"</div>
+      <p class="testimonial-text">Packaging was a work of art on its own. The shoes fit perfectly — no break-in period needed. Shipping was lightning fast. I'll be ordering again very soon.</p>
+      <div class="testimonial-author">
+        <div class="author-avatar">D</div>
+        <div>
+          <div class="author-name">David Nakamura</div>
+          <div class="author-handle">Midnight Runner owner</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- BRANDS -->
+<div class="brands-section reveal">
+  <div class="brands-label">As featured in & partner brands</div>
+  <div class="brands-row">
+    <span class="brand-logo">VOGUE</span>
+    <span class="brand-logo">GQ</span>
+    <span class="brand-logo">HYPEBEAST</span>
+    <span class="brand-logo">COMPLEX</span>
+    <span class="brand-logo">ESQUIRE</span>
+    <span class="brand-logo">HIGHSNOBIETY</span>
+  </div>
+</div>
+
+<!-- NEWSLETTER -->
+<div class="newsletter-section reveal">
+  <div>
+    <h2 class="newsletter-title">Get Early<br><em>Access</em> to<br>New Drops</h2>
+    <p class="newsletter-desc">Join 48,000+ sneaker enthusiasts. Be first to know about new arrivals, exclusive drops, and members-only sales.</p>
+  </div>
+  <div class="newsletter-form">
+    <div class="newsletter-input-row">
+      <input class="newsletter-input" type="email" placeholder="Your email address">
+      <button class="newsletter-btn">Subscribe</button>
+    </div>
+    <div class="newsletter-perks">
+      <div class="perk"><span class="perk-dot"></span>Early access</div>
+      <div class="perk"><span class="perk-dot"></span>No spam</div>
+      <div class="perk"><span class="perk-dot"></span>Unsubscribe anytime</div>
+    </div>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-grid">
+    <div>
+      <div class="footer-brand">SOLE <span>STUDIO</span></div>
+      <p class="footer-tagline">Premium footwear for those who believe the shoes make the person. Curated with purpose, crafted to last.</p>
+      <div class="social-links">
+        <div class="social-btn">
+          <svg viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 9.81 19.79 19.79 0 01.01 1.22 2 2 0 012 0h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L6.91 7.91a16 16 0 006.18 6.18l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 16.92z"/></svg>
+        </div>
+        <div class="social-btn">
+          <svg viewBox="0 0 24 24"><path d="M23 3a10.9 10.9 0 01-3.14 1.53 4.48 4.48 0 00-7.86 3v1A10.66 10.66 0 013 4s-4 9 5 13a11.64 11.64 0 01-7 2c9 5 20 0 20-11.5a4.5 4.5 0 00-.08-.83A7.72 7.72 0 0023 3z"/></svg>
+        </div>
+        <div class="social-btn">
+          <svg viewBox="0 0 24 24"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1112.63 8 4 4 0 0116 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>
+        </div>
+      </div>
+    </div>
+    <div>
+      <div class="footer-heading">Shop</div>
+      <ul class="footer-links">
+        <li><a href="#">New Arrivals</a></li>
+        <li><a href="#">Men's Collection</a></li>
+        <li><a href="#">Women's Collection</a></li>
+        <li><a href="#">Sport & Running</a></li>
+        <li><a href="#">Sale</a></li>
+      </ul>
+    </div>
+    <div>
+      <div class="footer-heading">Company</div>
+      <ul class="footer-links">
+        <li><a href="#">Our Story</a></li>
+        <li><a href="#">Craftsmanship</a></li>
+        <li><a href="#">Sustainability</a></li>
+        <li><a href="#">Press Kit</a></li>
+        <li><a href="#">Careers</a></li>
+      </ul>
+    </div>
+    <div>
+      <div class="footer-heading">Support</div>
+      <ul class="footer-links">
+        <li><a href="#">Size Guide</a></li>
+        <li><a href="#">Shipping Info</a></li>
+        <li><a href="#">Returns Policy</a></li>
+        <li><a href="#">Care Guide</a></li>
+        <li><a href="#">Contact Us</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <div class="footer-copy">© 2026 Sole Studio. All rights reserved. Portfolio UI Design.</div>
+    <div class="footer-legal">
+      <a href="#">Privacy Policy</a>
+      <a href="#">Terms of Service</a>
+      <a href="#">Cookie Settings</a>
+    </div>
+  </div>
+</footer>
+
+<script>
+  // Custom cursor
+  const cursor = document.getElementById('cursor');
+  const cursorRing = document.getElementById('cursorRing');
+  let mx = 0, my = 0, rx = 0, ry = 0;
+
+  document.addEventListener('mousemove', e => {
+    mx = e.clientX; my = e.clientY;
+    cursor.style.left = mx + 'px';
+    cursor.style.top = my + 'px';
+  });
+
+  function animateRing() {
+    rx += (mx - rx) * 0.12;
+    ry += (my - ry) * 0.12;
+    cursorRing.style.left = rx + 'px';
+    cursorRing.style.top = ry + 'px';
+    requestAnimationFrame(animateRing);
+  }
+  animateRing();
+
+  document.querySelectorAll('a, button, .product-card, .category-card, .nav-cart, .color-dot, .size-btn, .social-btn, .brand-logo').forEach(el => {
+    el.addEventListener('mouseenter', () => {
+      cursor.classList.add('hovered');
+      cursorRing.classList.add('hovered');
+    });
+    el.addEventListener('mouseleave', () => {
+      cursor.classList.remove('hovered');
+      cursorRing.classList.remove('hovered');
+    });
+  });
+
+  // Navbar scroll
+  window.addEventListener('scroll', () => {
+    const nav = document.getElementById('navbar');
+    if (window.scrollY > 80) nav.classList.add('scrolled');
+    else nav.classList.remove('scrolled');
+  });
+
+  // Reveal on scroll
+  const revealEls = document.querySelectorAll('.reveal');
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach((entry, i) => {
+      if (entry.isIntersecting) {
+        setTimeout(() => entry.target.classList.add('visible'), i * 80);
+        observer.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.1 });
+  revealEls.forEach(el => observer.observe(el));
+
+  // Size buttons
+  document.querySelectorAll('.size-btn:not(.sold-out)').forEach(btn => {
+    btn.addEventListener('click', function() {
+      this.closest('.size-options').querySelectorAll('.size-btn').forEach(b => b.classList.remove('active'));
+      this.classList.add('active');
+    });
+  });
+
+  // Color dots
+  document.querySelectorAll('.color-dot').forEach(dot => {
+    dot.addEventListener('click', function() {
+      this.closest('.color-dots').querySelectorAll('.color-dot').forEach(d => d.classList.remove('active'));
+      this.classList.add('active');
+    });
+  });
+</script>
+</body>
+</html>
